@@ -2,35 +2,76 @@
 
 <html lang="en">
 <head>
+	<!-- ================================ BOOTSTRAP TAGS ================================ -->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<!-- above are the necessary bootstrap tags -->
+	<!-- BOOTSTRAP stylesheet-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<title>Product Review Page</title>
-	<script type="text/javascript" src="./dist/index.js" defer></script>
-	<style src="./css/style.css"></style>
+	<!-- <style src="./css/style.css"></style> -->
 </head>
 <body>
-	<template id="responseTemplate">
-		<hr>
-		<span id="ageOfCurrentUser">000</span>
-	</template>
-	<div class="row">
-		<div class="column">
-			<img src="./resources/breadboard.jpg" alt="Dave's Killer Breadboard TM" id="breadboardImg" style="width: 100%;">
+	<script src="./dist/index.js" defer></script>
+	<div class="container">
+		<!-- NAVBAR CONTAINER-->
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="main-navigation">
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#">About</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Contact</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	
+		<!-- TEMPLATE -->
+		<template id="responseTemplate">
+			<hr>
+			<span id="ageOfCurrentUser">000</span>
+		</template>
+		<!-- <img src="./resources/breadboard.jpg" alt="Dave's Killer Breadboard TM" id="breadboardImg" style="width: 100%;"> -->	
+		<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">	
+			<div class="col-md-5 p-lg-5 mx-auto my-5">
+				<h1 class="display-4 font-weight-normal">Dave's Killer Breadboards</h1>
+				<p class="lead  font-weight-normal">
+					"These breadboards are guaranteed to murder the competition when it comes to reliability and durability. 
+					With a couple of Dave's Killer Breadboards by your side, your project is guarunteed not to catch a case (of unwanted electrical discharge). 
+					Buy now and secure your copy of the breadboard that inmate #256475 at Arizona State Penitentiary says &#34;(Dave's Killer Breadboards) are made with the highest quality
+					and cut down all other computer hardware supply options that try to compete with good ol' Dave's.&#34;"
+				</p>
+				<a class="btn btn-outline-secondary" href="#">Write a Review</a>
+			</div>
 		</div>
-		<div class="column">
-			<h1 id="mainHeader" style="width: 100%;">Dave's Killer Breadboards</h1>
-		</div>
+		<div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
+			<div class="bg-dark mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-white overflow-hidden">
+				<img src="./resources/breadboard.jpg" alt="Dave's Killer Breadboard" width="50%;">
+			</div>
+			<div class="bg-white mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center text-black overflow-hidden">
+				<h3>Placeholder Text</h3>
+			</div>
+		</div>	
+		<label for="name">NameL</label>
+		<input type="text" id="textUserName">
+		<br>
+		<br>
+		<label for="dob">DOB:</label>
+		<input type="date" id="dateDOB">
+		<button id="btnSubmit">How Old Am I?</button>
+		<div id="responsePoint"></div>
 	</div>
-	<label for="name">NameL</label>
-	<input type="text" id="textUserName">
-	<br>
-	<br>
-	<label for="dob">DOB:</label>
-	<input type="date" id="dateDOB">
-	<button id="btnSubmit">How Old Am I?</button>
-	<div id="responsePoint"></div>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 </html>
