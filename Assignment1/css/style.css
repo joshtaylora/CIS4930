@@ -2,9 +2,20 @@
 .product_label {
 	color: black;
 }
-.ratings {
 
+.imgColumn {
+	width: 33.33%;
+	padding: 5px;
 }
-.rating_input {
 
+.column {
+	float: left;
+	width: 33.66%;
+	padding: 5px;
+}
+
+.row::after {
+	content: "";
+	clear: btoh;
+	display: table;
 }
