@@ -8,36 +8,30 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- BOOTSTRAP stylesheet-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://kit.fontawesome.com/df2fabd4eb.js" crossorigin="anonymous"></script>
 	<title>Product Review Page</title>
 	<style src="./css/style.css"></style>
 </head>
 <body>
 	<script src="./dist/index.js" defer></script>
 	<div class="container">
-		<!-- NAVBAR CONTAINER-->
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="main-navigation">
-				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="#">About</a>
-					</li>
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Contact</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-	
 		<!-- TEMPLATE -->
 		<template id="responseTemplate">
-			<hr>
-			<span id="ageOfCurrentUser">000</span>
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title" id="responseName"></h5>
+					<p class="card-subtitle mb-2 text-muted" id="responseDate"></p>
+					<p class="card-text" id="responseComment"></p>
+					<div id="responseStars">
+						<span id="responseStar1" class="far fa-star"></span>
+						<span id="responseStar2" class="far fa-star"></span>
+						<span id="responseStar3" class="far fa-star"></span>
+						<span id="responseStar4" class="far fa-star"></span>
+						<span id="responseStar5" class="far fa-star"></span>
+					</div>
+				</div>
+			</div>
 		</template>
 		<!-- <img src="./resources/breadboard.jpg" alt="Dave's Killer Breadboard TM" id="breadboardImg" style="width: 100%;"> -->	
 		<div class="row position-relative overflow-hidden p-3 p-md-5 text-center bg-light">	
@@ -46,44 +40,58 @@
 				<p class="lead  font-weight-normal">
 					"These breadboards are guaranteed to murder the competition when it comes to reliability and durability. 
 					With a couple of Dave's Killer Breadboards by your side, your project is guarunteed not to catch a case (of unwanted electrical discharge). 
-					Buy now and secure your copy of the breadboard that inmate #256475 at Arizona State Penitentiary says &#34;(Dave's Killer Breadboards) are made with the highest quality
-					and cut down all other computer hardware supply options that try to compete with good ol' Dave's.&#34;"
+					
 				</p>
 				<a class="btn btn-outline-secondary" href="#">Write a Review</a>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col p-2 p-md-5 text-center bg-dark">
-				<img src="./resources/breadboard.png" alt="Dave's Killer Breadboard" >
+				<img src="./resources/breadboard.png" alt="Dave's Killer Breadboard" width="99%;">
 			</div>
-			<div class="col p-3 p-md-5 bg-light">
-				<h3 class="text-center">Write a Review!</h3>
-				<label for="name">Name:</label>
+			<div class="col p-3 p-md-5 bg-light text-center">
+				<h3 >Write a Review!</h3>
+				<label for="txtUserName">Name:</label>
 				<input type="text" id="txtUserName" class="m-md-3">
 				<br>
+				<label for="txtComments">Comments:</label>
+				<input type="text" id="txtComments" class="m-md-3">
+				<br>
 				<label for="rating">Star Rating:</label>
-				<button id="oneStar" type="button" class="btn btn-warning btn-lg" aria-label="Left Align">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</button>
-				<button id="twoStar" type="button" class="btn btn-warning btn-lg" aria-label="Left Align">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</button>
-				<button id="threeStar" type="button" class="btn btn-warning btn-lg" aria-label="Left Align">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</button>
-				<button id="fourStar" type="button" class="btn btn-warning btn-lg" aria-label="Left Align">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</button>
-				<button id="fiveStar" type="button" class="btn btn-warning btn-lg" aria-label="Left Align">
-					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-				</button>
+				<div class="star-rating">
+					<button id="starbtn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+						<span id="star1" class="far fa-star" aria-hidden="true"></span>
+					</button>
+					<button id="star2btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+						<span id="star2" class="far fa-star" aria-hidden="true"></span>
+					</button>
+					<button id="star3btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+						<span id="star3" class="far fa-star" aria-hidden="true"></span>
+					</button>
+					<button id="star4btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+						<span id="star4" class="far fa-star" aria-hidden="true"></span>
+					</button>
+					<button id="star5btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+						<span id="star5" class="far fa-star" aria-hidden="true"></span>
+					</button>
+				</div>
+				<br>
+				<button id="btnSubmit">Submit Review</button>
 			</div>
 		</div>
-		<br>
-		<label for="dob">DOB:</label>
-		<input type="date" id="dateDOB">
-		<button id="btnSubmit">How Old Am I?</button>
-		<div id="responsePoint"></div>
+		<div class="p-5">
+			<div class="row d-flex">
+				<blockquote class="blockquote">
+					<p class="mb-0">Dave's Killer Breadboards are made with the highest quality and cut down all other computer hardware supply options that try to compete with good ol' Dave's.</p>
+					<footer class="blockquote-footer">Inmate #2531537 at <cite title="Arizone State Penitentiary">Arizone State Penitentiary</cite></footer>
+				</blockquote>
+			</div>
+		</div>
+		<div clas="row">
+			<div class="col-sm-6">
+				<div id="responsePoint"></div>
+			</div>
+		</div>
 	</div>
 	<!-- Bootstrap, Jquery, and popper scripts -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
