@@ -33,6 +33,10 @@ var responsePoint = document.getElementById('responsePoint');
 btnSubmit.addEventListener('click', function (event) {
     var template = getTemplateClone('responseTemplate');
     var name = txtUserName.value;
+    if (name.length < 1) { // inform the customer to please enter a name and resubmit
+        alert('Please enter a name for your review and resubmit');
+        return;
+    }
     var comment = txtComments.value;
     var currentDate = new Date();
     var dateD = currentDate.getDay().toString();
@@ -43,6 +47,11 @@ btnSubmit.addEventListener('click', function (event) {
     template.content.getElementById('responseComment').innerText = comment;
     template.content.getElementById('responseDate').innerText = dateString;
     console.log(starReview);
+    // check that the review for the product contains a star rating
+    if (starReview == 0) {
+        alert("Please select from one of the 5 star rating options!");
+        return;
+    }
     switch (starReview) {
         case (1):
             template.content.getElementById('responseStars').innerText = '★';
@@ -68,6 +77,7 @@ btnSubmit.addEventListener('click', function (event) {
             break;
     }
     responsePoint === null || responsePoint === void 0 ? void 0 : responsePoint.appendChild(template.content);
+    starReview = 0;
 });
 function getTemplateClone(templateID) {
     var _a;

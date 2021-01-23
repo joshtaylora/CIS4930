@@ -50,6 +50,11 @@ btnSubmit.addEventListener
 ('click', (event)=> {
 	var template = getTemplateClone('responseTemplate');
 	var name = txtUserName.value;
+	if (name.length < 1)
+	{ // inform the customer to please enter a name and resubmit
+		alert('Please enter a name for your review and resubmit')
+		return;
+	}
 	var comment = txtComments.value;
 
 	var currentDate = new Date();
@@ -63,6 +68,13 @@ btnSubmit.addEventListener
 	template.content.getElementById('responseDate')!.innerText = dateString;
 
 	console.log(starReview);
+
+	// check that the review for the product contains a star rating
+	if (starReview == 0)
+	{
+		alert("Please select from one of the 5 star rating options!");
+		return;
+	}
 
 	switch(starReview)
 	{
@@ -92,6 +104,7 @@ btnSubmit.addEventListener
 
 
 	responsePoint?.appendChild(template.content);
+	starReview = 0;
 });
 
 
