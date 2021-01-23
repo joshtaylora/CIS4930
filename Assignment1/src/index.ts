@@ -3,51 +3,51 @@
 var txtUserName = document.getElementById('txtUserName') as HTMLInputElement;
 var txtComments = document.getElementById('txtComments') as HTMLInputElement;
 
+var starReview:number = 0; 
+
+// button for 1 star review + event listener for it
 var btnStar1 = document.getElementById('star1btn') as HTMLInputElement;
+btnStar1.addEventListener('click', (event)=>
+{
+	starReview = +btnStar1.value;
+});
+
+// button for 2 star review + event listener
 var btnStar2 = document.getElementById('star2btn') as HTMLInputElement;
+btnStar2.addEventListener('click', (event)=>
+{
+	starReview = +btnStar2.value;
+});
+
+// button for 3 star review + event listener
 var btnStar3 = document.getElementById('star3btn') as HTMLInputElement;
+btnStar3.addEventListener('click', (event)=>
+{
+	starReview = +btnStar3.value;
+});
+
+// button for 4 star review + event listener
 var btnStar4 = document.getElementById('star4btn') as HTMLInputElement;
+btnStar4.addEventListener('click', (event)=>
+{
+	starReview = +btnStar4.value;
+});
+
+// button for  star review + event listener
 var btnStar5 = document.getElementById('star5btn') as HTMLInputElement;
-
-var checkedStars:number = 0;
-
-btnStar1.addEventListener('click',
-(event) =>
+btnStar5.addEventListener('click', (event)=>
 {
-	checkedStars = 1;
+	starReview = +btnStar5.value;
 });
 
-btnStar2.addEventListener('click',
-(event) =>
-{
-	checkedStars = 2;
-});
-
-btnStar3.addEventListener('click',
-(event) =>
-{
-	checkedStars = 3;
-});
-
-btnStar4.addEventListener('click',
-(event) =>
-{
-	checkedStars = 4;
-});
-
-btnStar5.addEventListener('click',
-(event) =>
-{
-	checkedStars = 5;
-});
 
 var btnSubmit = document.getElementById('btnSubmit') as HTMLInputElement;
 
 var responsePoint = document.getElementById('responsePoint');
 
-btnSubmit.addEventListener('click', 
-(event) => 
-{
+
+btnSubmit.addEventListener
+('click', (event)=> {
 	var template = getTemplateClone('responseTemplate');
 	var name = txtUserName.value;
 	var comment = txtComments.value;
@@ -62,39 +62,37 @@ btnSubmit.addEventListener('click',
 	template.content.getElementById('responseComment')!.innerText = comment;
 	template.content.getElementById('responseDate')!.innerText = dateString;
 
-	switch(checkedStars)
+	console.log(starReview);
+
+	switch(starReview)
 	{
 		case(1):
-			template.content.getElementById('responseStar1')!.style.backgroundColor = 'rgb(255,200,0)';
+			template.content.getElementById('responseStars')!.innerText = '★';
+			template.content.getElementById('responseStars')!.setAttribute("style", "color:rgb(255, 200, 0); color:rgb(255, 200, 0);");
 			break;
 		case(2):
-			template.content.getElementById('responseStar1')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar2')!.style.backgroundColor = 'rgb(255,200,0)';
+			template.content.getElementById('responseStars')!.innerText = '★★';
+			template.content.getElementById('responseStars')!.setAttribute("style", "color:rgb(255, 200, 0); color:rgb(255, 200, 0);");
 			break;
 		case(3):
-			template.content.getElementById('responseStar1')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar2')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar3')!.style.backgroundColor = 'rgb(255,200,0)';
+			template.content.getElementById('responseStars')!.innerText = '★★★'
+			template.content.getElementById('responseStars')!.setAttribute("style", "color:rgb(255, 200, 0); color:rgb(255, 200, 0);");
 			break;
 		case(4):
-			template.content.getElementById('responseStar1')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar2')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar3')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar4')!.style.backgroundColor = 'rgb(255,200,0)';
+			template.content.getElementById('responseStars')!.innerText = '★★★★';
+			template.content.getElementById('responseStars')!.setAttribute("style", "color:rgb(255, 200, 0); color:rgb(255, 200, 0);");
 			break;
 		case(5):
-			template.content.getElementById('responseStar1')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar2')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar3')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar4')!.style.backgroundColor = 'rgb(255,200,0)';
-			template.content.getElementById('responseStar5')!.style.backgroundColor = 'rgb(255,200,0)';
+			template.content.getElementById('responseStars')!.innerText = '★★★★★';
+			template.content.getElementById('responseStars')!.setAttribute("style", "color:rgb(255, 200, 0); color:rgb(255, 200, 0);");
 			break;
 		default:
 			break;
 	}
 
+
 	responsePoint?.appendChild(template.content);
-})
+});
 
 
 

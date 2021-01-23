@@ -18,20 +18,18 @@
 	<div class="container">
 		<!-- TEMPLATE -->
 		<template id="responseTemplate">
-			<div class="card">
+			<div class="card m-3">
 				<div class="card-body">
 					<h5 class="card-title" id="responseName"></h5>
+					<h4 id="responseStars"></h4>
 					<p class="card-subtitle mb-2 text-muted" id="responseDate"></p>
 					<p class="card-text" id="responseComment"></p>
-					<div id="responseStars">
-						<span id="responseStar1" class="far fa-star"></span>
-						<span id="responseStar2" class="far fa-star"></span>
-						<span id="responseStar3" class="far fa-star"></span>
-						<span id="responseStar4" class="far fa-star"></span>
-						<span id="responseStar5" class="far fa-star"></span>
-					</div>
 				</div>
+				<br>
 			</div>
+		</template>
+		<template id="starTemplate">
+			<span id="responseStar" class="far fa-star"></span>
 		</template>
 		<!-- <img src="./resources/breadboard.jpg" alt="Dave's Killer Breadboard TM" id="breadboardImg" style="width: 100%;"> -->	
 		<div class="row position-relative overflow-hidden p-3 p-md-5 text-center bg-light">	
@@ -59,19 +57,19 @@
 				<br>
 				<label for="rating">Star Rating:</label>
 				<div class="star-rating">
-					<button id="starbtn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+					<button id="star1btn" type="button" class="btn" aria-label="Left Align" value='1'>
 						<span id="star1" class="far fa-star" aria-hidden="true"></span>
 					</button>
-					<button id="star2btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+					<button id="star2btn" type="button" class="btn" aria-label="Left Align" value='2'>
 						<span id="star2" class="far fa-star" aria-hidden="true"></span>
 					</button>
-					<button id="star3btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+					<button id="star3btn" type="button" class="btn" aria-label="Left Align" value='3'>
 						<span id="star3" class="far fa-star" aria-hidden="true"></span>
 					</button>
-					<button id="star4btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+					<button id="star4btn" type="button" class="btn" aria-label="Left Align" value='4'>
 						<span id="star4" class="far fa-star" aria-hidden="true"></span>
 					</button>
-					<button id="star5btn" type="button" class="btn" aria-label="Left Align" data-toggle="button">
+					<button id="star5btn" type="button" class="btn" aria-label="Left Align" value='5'>
 						<span id="star5" class="far fa-star" aria-hidden="true"></span>
 					</button>
 				</div>
@@ -79,20 +77,19 @@
 				<button id="btnSubmit">Submit Review</button>
 			</div>
 		</div>
-		<div class="p-5">
-			<div class="row d-flex">
-				<blockquote class="blockquote">
-					<p class="mb-0">Dave's Killer Breadboards are made with the highest quality and cut down all other computer hardware supply options that try to compete with good ol' Dave's.</p>
-					<footer class="blockquote-footer">Inmate #2531537 at <cite title="Arizone State Penitentiary">Arizone State Penitentiary</cite></footer>
-				</blockquote>
+		<br>
+		<hr>
+		<br>
+		<div class="card m-3">
+			<div class="card-body">
+				<h5 class="card-title">Inmate #2531537 at <cite title="Arizone State Penitentiary">Arizone State Penitentiary</cite></h5>
+				<h4 id="exampleReview" style="color:rgb(255, 200, 0); color:rgb(255, 200, 0);">★★★★</h4>
+				<p class="card-text">Dave's Killer Breadboards are made with the highest quality and cut down all other computer hardware supply options that try to compete with good ol' Dave's.</p>
 			</div>
 		</div>
-		<div clas="row">
-			<div class="col-sm-6">
-				<div id="responsePoint"></div>
-			</div>
+		<div class="m-3">
+			<div id="responsePoint"></div>
 		</div>
-	</div>
 	<!-- Bootstrap, Jquery, and popper scripts -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
