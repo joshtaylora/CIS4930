@@ -5,6 +5,8 @@ var txtComments = document.getElementById('txtComments') as HTMLInputElement;
 
 var starReview:number = 0; 
 
+var starArray:Array<number> = [];
+
 // button for 1 star review + event listener for it
 var btnStar1 = document.getElementById('star1btn') as HTMLInputElement;
 btnStar1.addEventListener('click', (event)=>
@@ -75,7 +77,9 @@ btnSubmit.addEventListener
 		alert("Please select from one of the 5 star rating options!");
 		return;
 	}
-
+	// push the star rating into the array of review values
+	starArray.push(starReview);
+	calcReviewAvg
 	switch(starReview)
 	{
 		case(1):
@@ -107,7 +111,14 @@ btnSubmit.addEventListener
 	starReview = 0;
 });
 
-
+function calcReviewAvg(): number
+{
+	let avg: number = 0;
+	starArray.forEach(element => {
+		avg += element;
+	});
+	return avg;
+}
 
 function getTemplateClone(templateID: string): HTMLTemplateElement
 {
