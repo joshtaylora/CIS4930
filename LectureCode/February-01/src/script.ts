@@ -1,18 +1,19 @@
 import http, { IncomingMessage, ServerResponse } from 'http'
+import fs from 'fs';
+import path from 'path';
 
-/* Async code demonstration*/
-console.log("Hello,");
-// the following console.log statement does not get run until 1000ms has transpired
-setTimeout( () => {
-	console.log("Async Message");
-}, 1000);
+// /* Async code demonstration*/
+// console.log("Hello,");
+// // the following console.log statement does not get run until 1000ms has transpired
+// setTimeout( () => {
+// 	console.log("Async Message");
+// }, 1000);
 
-console.log("world!")
+// console.log("world!")
 
-
-/**
- * http server demo
- */
+console.log(process.cwd());
+// print the html 
+// console.log(myHtmlData.toString());
 
 const server = http.createServer(reqListener);
 
@@ -20,20 +21,30 @@ function reqListener(req: IncomingMessage, res: ServerResponse)
  {
 	if (req.url === "/")
 	{
-		console.log(req.url);
-		res.write('<html>');
-		res.write('<body>');
-		res.write(`<h1>Hello, welcome!</h1>`);
-		// the Action parameter sends the data to a new url called Data
-		res.write('<form method="POST" Action="Data">');
-		res.write('<label for="txtName">Enter your name here: </form>');
-		res.write('<input type="text" name="txtName" id="txtName">');
-		res.write('<input type="submit">')
-		res.write('</form>');
-		res.write('</body>');	
-		res.write('</html>');
-		res.statusCode = 200;
-		res.end();
+		// anything that happens inside this will take a while, so return the promise and start executing busy work and then resolve
+		// when it's finished
+		let myBusyWork = new Promise((resolve,reject) =>
+		{
+			fs.readFile(path.join(process.cwd(), 'views', 'index.html'), (err,data:Buffer)=> { // err is the node error, data is the data buffer
+				if (err!==null)
+				{
+					reject(err); // reject promise if there is an error
+				}
+				else
+				{
+					resolve(data);
+				}
+
+			});
+		});
+		myBusyWork.then((data)=>
+		{
+			let dataBuffer = data as Buffer;
+			res.write(dataBuffer.toString());
+			res.statusCode = 200;
+			res.end();
+		});
+
 	}
 	else if (req.url === '/Data')
 	{
