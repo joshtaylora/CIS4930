@@ -1,0 +1,11 @@
+{
+  "name": "february-22",
+  "version": "1.0.0",
+  "description": "February 22 lecture code",
+  "main": "dist/script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua Taylor",
+  "license": "ISC"
+}
