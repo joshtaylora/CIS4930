@@ -96,9 +96,7 @@ userRouter.post("/delete", (req, res, next) => {
     // delete user
     let result = userDB.deleteUser(id);
     if (result === true) {
-        res.status(200).send(JSON.stringify({
-            message: "User succesffully deleted from the database",
-        }));
+        res.status(200).type('json').send({ message: "User succesffully deleted from the database" });
     }
     else {
         res.status(404).json({

@@ -11,7 +11,6 @@ class User {
     }
     toJSON() {
         let objString = JSON.stringify(Object.assign({}, this));
-        let objJSON = JSON.parse(objString);
         return objString;
     }
 }

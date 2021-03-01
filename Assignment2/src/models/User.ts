@@ -34,7 +34,6 @@ class User implements UserI{
   public toJSON()
   {
     let objString = JSON.stringify(Object.assign({}, this));
-    let objJSON = JSON.parse(objString);
     return objString; 
   }
 }
