@@ -5,4 +5,4 @@
  2. Startup the node <code>nodemon</code> tool which will start the <code>dist/index.js</code> javascript file that has been compiled from the latest saved version of the <code>src/index.ts</code> TypeScript file
  3. In your browser, navigate to <code>localhost:3000</code>
 ## Usage
-<img href="./images/documentation/help-page.png" alt="Help page for assignment 2 API application">
+![alt text](images/documentation/help-page.png)
