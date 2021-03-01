@@ -1,0 +1,49 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible' content='IE=edge')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    title Retrieve User
+    // Bootstrap
+    script(src='https://code.jquery.com/jquery-3.5.1.js' integrity='sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=' crossorigin='anonymous')
+    link(href='../css/bootstrap-4.4.1.css' rel='stylesheet')
+    link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js' integrity='sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV' crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js' integrity='sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf' crossorigin='anonymous')
+  body
+    // body code goes here
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      a.navbar-brand(href='#') CIS4930
+      button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+        span.navbar-t21oggler-icon
+      #navbarSupportedContent.collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          li.nav-item.active
+            a.nav-link(href='/')
+              | Home 
+              span.sr-only (current)
+          li.nav-item.dropdown
+            a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false') Request Methods
+            .dropdown-menu(aria-labelledby='navbarDropdown')
+              a.dropdown-item(href='#get-method-requests') Get
+              .dropdown-divider
+              a.dropdown-item(href='#post-method-requests') Post
+              .dropdown-divider
+              a.dropdown-item(href='#patch-method-requests') Patch
+              .dropdown-divider
+              a.dropdown-item(href='#delete-method-requests') Delete
+        form.form-inline.my-2.my-lg-0
+          input.form-control.mr-sm-2(type='search' placeholder='Search' aria-label='Search')
+          button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+    .container.justify-content-around
+      form(id="retrieve-user-form" action="/User/" method="get")
+        .form-group
+          label(for='UserID') UserID
+          input#UserID.form-control(type='text', name="UserID", placeholder='Enter a unique UserID')
+        button.btn.btn-primary(type='submit') Retrieve User
+    // jQuery (necessary for Bootstrap's JavaScript plugins)
+    script(src='../js/jquery-3.4.1.min.js')
+    // Include all compiled plugins (below), or include individual files as needed
+    script(src='../js/popper.min.js')
+    script(src='../js/bootstrap-4.4.1.js')

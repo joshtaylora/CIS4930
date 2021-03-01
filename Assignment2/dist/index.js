@@ -11,9 +11,12 @@ const UserRoutes_2 = require("./routes/UserRoutes");
 // console.log(path.join(process.cwd(), "views", "help.html"));
 // create the express application
 let app = express_1.default();
-app.use(body_parser_1.default.urlencoded({ extended: false }));
-// app.use(bodyParser.json);
+app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.use(body_parser_1.default.json());
+app.set('view engine', 'pug');
+app.set('views', './views');
 app.use(express_1.default.static(path_1.default.join(process.cwd(), 'public')));
+// use the user router
 app.use('/User', UserRoutes_2.userRouter);
 app.get("/", (req, res, next) => {
     console.log(req.url);
@@ -21,8 +24,8 @@ app.get("/", (req, res, next) => {
     // res.send('<h1>Help Page</h1><form method="POST"><input type="text" name="Name"/><input type="submit"/></form>');
 });
 app.get("/Users", (req, res, next) => {
-    console.log(UserRoutes_1.userArray.toString);
-    res.send(JSON.parse(JSON.stringify(UserRoutes_1.userArray)));
+    console.log(UserRoutes_1.userDB.toJSON());
+    res.type('json').send(UserRoutes_1.userDB.toJSON());
 });
 app.listen(3000);
 //# sourceMappingURL=index.js.map

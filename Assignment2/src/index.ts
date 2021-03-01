@@ -4,22 +4,24 @@ import bodyParser from "body-parser";
 import fs from "fs";
 import path from "path";
 import { exit } from "process";
-import { userArray } from "./routes/UserRoutes";
+import { userDB} from "./routes/UserRoutes";
 import { userRouter } from "./routes/UserRoutes";
-import { User } from "./models/User"
-
 
 // console.log(path.join(process.cwd(), "views", "help.html"));
 
 // create the express application
 let app = express();
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({extended: false}));
-// app.use(bodyParser.json);
+app.set('view engine', 'pug');
+app.set('views', './views');
+
 
 app.use(express.static(path.join(process.cwd(), 'public')));
-
+// use the user router
 app.use('/User', userRouter);
+
 
 app.get("/", (req, res, next) => {
   console.log(req.url);
@@ -28,9 +30,8 @@ app.get("/", (req, res, next) => {
 });
 
 app.get("/Users", (req, res, next) => {
-  console.log(userArray.toString);
-  res.send(JSON.parse(JSON.stringify(userArray)));
+  console.log(userDB.toJSON());
+  res.type('json').send(userDB.toJSON());
 });
-
 
 app.listen(3000);

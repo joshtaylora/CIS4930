@@ -1,10 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-/*
-    User object with constructor that will initialize all of
-    the necessary user class variables
-*/
 class User {
     constructor(UserID, FirstName, LastName, EmailAddress, _password) {
         this.UserID = UserID;
@@ -12,6 +8,11 @@ class User {
         this.LastName = LastName;
         this.EmailAddress = EmailAddress;
         this._password = _password;
+    }
+    toJSON() {
+        let objString = JSON.stringify(Object.assign({}, this));
+        let objJSON = JSON.parse(objString);
+        return objString;
     }
 }
 exports.User = User;

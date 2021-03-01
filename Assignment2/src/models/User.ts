@@ -1,10 +1,18 @@
-import { userArray } from "../routes/UserRoutes";
+import { stringify } from "querystring";
 
 /*
 	User object with constructor that will initialize all of 
 	the necessary user class variables
 */
-class User {
+interface UserI {
+
+  UserID: string;
+  FirstName: string;
+  LastName: string;
+  EmailAddress: string;
+  _password: string;
+}
+class User implements UserI{
   UserID: string;
   FirstName: string;
   LastName: string;
@@ -23,6 +31,13 @@ class User {
     this.EmailAddress = EmailAddress;
     this._password = _password;
   }
+  public toJSON()
+  {
+    let objString = JSON.stringify(Object.assign({}, this));
+    let objJSON = JSON.parse(objString);
+    return objString; 
+  }
 }
 
 export { User };
+export { UserI };
