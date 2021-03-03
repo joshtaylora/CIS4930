@@ -6,3 +6,4 @@
  3. In your browser, navigate to <code>localhost:3000</code>
 ## Usage
 ![alt text](images/documentation/help-page.png)
+- Shown above is the default route for the application. Navigating to <code>localhost:3000/</code> will result in an express

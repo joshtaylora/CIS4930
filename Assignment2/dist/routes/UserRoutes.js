@@ -55,7 +55,7 @@ userRouter.post("/", (req, res, next) => {
         console.log("User could not be added to database");
         // send the 201 status message and the stringified version of the User JSON object
         res
-            .status(404)
+            .status(409)
             .send("User could not be added to the database successfully");
     }
     console.log(userDB.toJSON);

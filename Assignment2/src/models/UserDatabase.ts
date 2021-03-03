@@ -9,8 +9,11 @@ class UserDatabase {
     this.size = 0;
     this.records = {};
   }
-
+  // method to add a new User object into the database 
   public addUser(newUser: User): User | null {
+    // Declare the variable that will be returned to be either:
+    //  - A User object if we were able to find the User
+    //  - null if we were unable to find the user
     let addedUser: User | null = newUser;
     if (this.size === 0) {
       this.userArray.push(newUser);
