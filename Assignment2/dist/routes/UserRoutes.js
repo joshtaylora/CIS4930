@@ -54,7 +54,7 @@ userRouter.post("/", (req, res, next) => {
                 let newUser = new User_1.User(req.body.UserID, req.body.FirstName, req.body.LastName, req.body.EmailAddress, hash);
                 console.log(hash);
                 userDB.addUser(newUser);
-                res.type("json").status(201).json(JSON.parse(newUser.toJSON()));
+                res.status(201).json(JSON.parse(newUser.toJSON()));
             });
         });
     }
@@ -77,11 +77,13 @@ userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
     let userLogin = userDB.findUser(req.params.UserID);
     if (userLogin !== null) {
         console.log(`user's password: ${userLogin._password}, password entered: ${req.params.Password}`);
-        let hash = userLogin._password;
-        bcrypt_1.default.compare(req.params.Password, hash, function (err, result) {
+        // let hash = userLogin._password;
+        bcrypt_1.default.compare(req.params.Password, userLogin._password, function (err, result) {
             if (result && userLogin) {
                 // generate a jwt token for the authorization token
                 let token = jsonwebtoken_1.default.sign({ UserID: userLogin.UserID, FirstName: userLogin.FirstName }, "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag", { expiresIn: 100, subject: userLogin.UserID });
+                // returns a cookie that has the token so you don't need to include the headers
+                res.cookie('AuthToken', token);
                 res.status(200).send(token);
             }
             else {
@@ -94,17 +96,20 @@ userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
     }
 });
 /**
- * Method: POST
+ * Method: DELETE
  * URL: /User/delete
  */
 userRouter.delete("/:UserID", (req, res, next) => {
-    if (req.headers.token) {
+    if (req.headers.authorization) {
         try {
             /* Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag */
-            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.token.toString(), "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag");
+            // SPlit the authorization token since the token will have 'Bearer: ' before the token
+            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.split(' ')[1].toString(), "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag");
             console.log(tokenPayload);
+            // Check if the token's UserID is equal to the UserID for the user attempting to be deleted
             if (tokenPayload.UserID === req.params.UserID) {
                 userDB.deleteUser(req.params.UserID);
+                res.status(200).send('User deleted');
             }
             else {
                 res

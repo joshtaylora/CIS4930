@@ -76,7 +76,7 @@ userRouter.post("/", (req, res, next) => {
         );
         console.log(hash);
         userDB.addUser(newUser);
-        res.type("json").status(201).json(JSON.parse(newUser.toJSON()));
+        res.status(201).json(JSON.parse(newUser.toJSON()));
       });
     });
   } else {
@@ -101,8 +101,8 @@ userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
     console.log(
       `user's password: ${userLogin._password}, password entered: ${req.params.Password}`
     );
-    let hash = userLogin._password;
-    bcrypt.compare(req.params.Password, hash, function (err, result) {
+    // let hash = userLogin._password;
+    bcrypt.compare(req.params.Password, userLogin._password, function (err, result) {
         if (result && userLogin)
         {
           // generate a jwt token for the authorization token
@@ -111,6 +111,8 @@ userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
             "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag",
             { expiresIn: 100, subject: userLogin.UserID }
           );
+          // returns a cookie that has the token so you don't need to include the headers
+          res.cookie('AuthToken', token);
           res.status(200).send(token);
         }
         else 
@@ -127,21 +129,23 @@ userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
 });
 
 /**
- * Method: POST
+ * Method: DELETE
  * URL: /User/delete
  */
 userRouter.delete("/:UserID", (req, res, next) => {
-  if (req.headers.token) {
+  if (req.headers.authorization) {
     try {
       /* Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag */
+      // SPlit the authorization token since the token will have 'Bearer: ' before the token
       let tokenPayload = jwt.verify(
-        req.headers.token.toString(),
+        req.headers.authorization.split(' ')[1].toString(),
         "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag"
       ) as { UserID: string; FirstName: string; iat: number };
       console.log(tokenPayload);
-
+      // Check if the token's UserID is equal to the UserID for the user attempting to be deleted
       if (tokenPayload.UserID === req.params.UserID) {
         userDB.deleteUser(req.params.UserID);
+        res.status(200).send('User deleted');
       } else {
         res
           .status(401)
