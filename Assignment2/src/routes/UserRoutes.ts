@@ -1,5 +1,8 @@
 import express from "express";
 import path from "path";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+// user import's
 import { User } from "../models/User";
 import { UserDatabase } from "../models/UserDatabase";
 //* =================================================================================== */
@@ -58,22 +61,25 @@ userRouter.post("/", (req, res, next) => {
   // grab the UserID string
   let userIDString: string = req.body.UserID;
   // create new User object using the specified parameters
-  let addedUser: User | null = userDB.addUser(
-    new User(
-      req.body.UserID,
-      req.body.FirstName,
-      req.body.LastName,
-      req.body.EmailAddress,
-      req.body._password
-    )
-  );
+  let addedUser: User | null = userDB.findUser(req.body.UserID);
+
   // if a User with the specified UserID does not already exist, create one
-  if (addedUser !== null) {
-    res
-      .type("json")
-      .status(201)
-      .json(JSON.parse(addedUser.toJSON()));
-  } else{
+  if (addedUser === null) {
+    bcrypt.genSalt(10, function (err, salt) {
+      bcrypt.hash(req.body._password, salt, function (err, hash) {
+        let newUser = new User(
+          req.body.UserID,
+          req.body.FirstName,
+          req.body.LastName,
+          req.body.EmailAddress,
+          hash
+        );
+        console.log(hash);
+        userDB.addUser(newUser);
+        res.type("json").status(201).json(JSON.parse(newUser.toJSON()));
+      });
+    });
+  } else {
     console.log("User could not be added to database");
     // send the 201 status message and the stringified version of the User JSON object
     res
@@ -81,6 +87,89 @@ userRouter.post("/", (req, res, next) => {
       .send("User could not be added to the database successfully");
   }
   console.log(userDB.toJSON);
+});
+
+/**
+ * Login Endpoint
+ * Method: GET
+ * URL: /Users/Login/{UserID}/{Password}
+ * Description: login endpoint that verifies the user's authenticity
+ */
+userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
+  let userLogin: User | null = userDB.findUser(req.params.UserID);
+  if (userLogin !== null) {
+    console.log(
+      `user's password: ${userLogin._password}, password entered: ${req.params.Password}`
+    );
+    let hash = userLogin._password;
+    bcrypt.compare(req.params.Password, hash, function (err, result) {
+        if (result && userLogin)
+        {
+          // generate a jwt token for the authorization token
+          let token = jwt.sign(
+            { UserID: userLogin.UserID, FirstName: userLogin.FirstName },
+            "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag",
+            { expiresIn: 100, subject: userLogin.UserID }
+          );
+          res.status(200).send(token);
+        }
+        else 
+        {
+          res.status(401).send({ message: "Invalid Username and Password" });
+        }
+
+      } 
+    )
+    
+  } else {
+    res.status(401).send({ message: "User could not be found in the system" });
+  }
+});
+
+/**
+ * Method: POST
+ * URL: /User/delete
+ */
+userRouter.delete("/:UserID", (req, res, next) => {
+  if (req.headers.token) {
+    try {
+      /* Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag */
+      let tokenPayload = jwt.verify(
+        req.headers.token.toString(),
+        "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag"
+      ) as { UserID: string; FirstName: string; iat: number };
+      console.log(tokenPayload);
+
+      if (tokenPayload.UserID === req.params.UserID) {
+        userDB.deleteUser(req.params.UserID);
+      } else {
+        res
+          .status(401)
+          .send({
+            message: "Error: you can only delete the user that is logged in.",
+          });
+      }
+    } catch (ex) {}
+  }
+});
+
+userRouter.post("/delete", (req, res, next) => {
+  console.log(req.headers.token);
+
+  let id = req.body.UserID;
+  // delete user
+  let result: boolean = userDB.deleteUser(id);
+  if (result === true) {
+    res
+      .status(200)
+      .type("json")
+      .send({ message: "User succesffully deleted from the database" });
+  } else {
+    res.status(404).json({
+      message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
+      UserDatabase: `${userDB.toJSON()}`,
+    });
+  }
 });
 
 /**
@@ -113,22 +202,11 @@ userRouter.get("/:ID", (req, res, next) => {
     return;
   }
   // send the 200 OK since we found the user
-  res.status(200).type('json').send(JSON.parse(JSON.stringify(user)));
+  res
+    .status(200)
+    .type("json")
+    .send(JSON.parse(JSON.stringify(user)));
   console.log(JSON.parse(JSON.stringify(user)));
-});
-
-userRouter.post("/delete", (req, res, next) => {
-  let id = req.body.UserID;
-  // delete user
-  let result: boolean = userDB.deleteUser(id);
-  if (result === true) {
-    res.status(200).type('json').send({message:"User succesffully deleted from the database"});
-  } else {
-    res.status(404).json({
-      message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
-      UserDatabase: `${userDB.toJSON()}`,
-    });
-  }
 });
 
 userRouter.patch("/:ID", (req, res, next) => {
@@ -141,7 +219,7 @@ userRouter.patch("/:ID", (req, res, next) => {
   if (req.body.FirstName === undefined) {
     fname = null;
   } else {
-    fname=req.body.FirstName;
+    fname = req.body.FirstName;
   }
   if (req.body.LastName === undefined) {
     lname = null;
@@ -168,7 +246,7 @@ userRouter.patch("/:ID", (req, res, next) => {
   );
   // ensure that we were able to update the user
   if (updateUser !== null) {
-    res.status(200).type('json').send(`${updateUser.toJSON()}`);
+    res.status(200).type("json").send(`${updateUser.toJSON()}`);
     console.log(`UPDATED USER\n${updateUser.toJSON()}`);
   } else {
     res.status(404).send({ message: `User [${id}] unable to be updated` });
