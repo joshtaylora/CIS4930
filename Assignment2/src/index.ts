@@ -4,9 +4,11 @@ import bodyParser from "body-parser";
 import fs from "fs";
 import path from "path";
 import { exit } from "process";
-import { userDB} from "./routes/UserRoutes";
-import { userRouter } from "./routes/UserRoutes";
+import { userDB} from "./routes/UserRouter";
+import { userRouter } from "./routes/UserRouter";
+import { postRouter } from "./routes/PostRouter";
 
+// export const ACCESS_TOKEN_SECRET = ;
 // console.log(path.join(process.cwd(), "views", "help.html"));
 
 // create the express application
@@ -20,8 +22,8 @@ app.set('views', './views');
 
 app.use(express.static(path.join(process.cwd(), 'public')));
 // use the user router
-app.use('/User', userRouter);
-
+app.use('/Users', userRouter);
+app.use('/Posts', postRouter);
 
 app.get("/", (req, res, next) => {
   console.log(req.url);

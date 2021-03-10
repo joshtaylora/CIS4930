@@ -7,6 +7,10 @@ const userRouter = express.Router();
 
 let userDB: UserDatabase = new UserDatabase();
 
+let adminU: User = new User('admin', 'Josh', 'Taylor', 'JoshuaTaylorA@gmail.com', 'n4559fv[slmw21":23&jahdfae');
+
+userDB.addUser(adminU);
+
 userDB.addUser(
   new User(
     "fakeUser1",
@@ -27,13 +31,19 @@ userDB.addUser(
   )
 );
 
+
+userRouter.get('/', (req, res, next) => {
+  console.log(userDB.toJSON());
+  res.type('json').send(userDB.toJSON());
+});
+
 /**
  * Method: GET
  * URL: /User/
  * Description: reroutes a user from the search form to the /User/{ID} get request
  */
 userRouter.get("/", (req, res, next) => {
-  let id = req.query.UserID;
+  let id = req.query.userId;
   // redirect the user to the /User/{ID}
   res.redirect(`/User/${id}`);
   // send the request to the next route which will be the /User/{ID} route
@@ -55,19 +65,19 @@ userRouter.get("/Create", (req, res, next) => {
  * Description: creates a new Record in the database
  */
 userRouter.post("/", (req, res, next) => {
-  // grab the UserID string
-  let userIDString: string = req.body.UserID;
+  // grab the userId string
+  let userIDString: string = req.body.userId;
   // create new User object using the specified parameters
   let addedUser: User | null = userDB.addUser(
     new User(
-      req.body.UserID,
+      req.body.userId,
       req.body.FirstName,
       req.body.LastName,
       req.body.EmailAddress,
-      req.body._password
+      req.body.password
     )
   );
-  // if a User with the specified UserID does not already exist, create one
+  // if a User with the specified userId does not already exist, create one
   if (addedUser !== null) {
     res
       .type("json")
@@ -87,7 +97,7 @@ userRouter.post("/", (req, res, next) => {
  * Method: GET
  * URL: /User/Search
  * Description: Used by pug to load the form that allows a user to graphically
- * input UserID and performa a search for that User in the db
+ * input userId and performa a search for that User in the db
  */
 userRouter.get("/Search", (req, res, next) => {
   console.log(req.body);
@@ -118,14 +128,14 @@ userRouter.get("/:ID", (req, res, next) => {
 });
 
 userRouter.post("/delete", (req, res, next) => {
-  let id = req.body.UserID;
+  let id = req.body.userId;
   // delete user
   let result: boolean = userDB.deleteUser(id);
   if (result === true) {
     res.status(200).type('json').send({message:"User succesffully deleted from the database"});
   } else {
     res.status(404).json({
-      message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
+      message: `Error: user with userId = ${id} not found in the database and could not be deleted`,
       UserDatabase: `${userDB.toJSON()}`,
     });
   }
@@ -154,10 +164,10 @@ userRouter.patch("/:ID", (req, res, next) => {
   } else {
     email = req.body.EmailAddress;
   }
-  if (req.body._password === undefined) {
+  if (req.body.password === undefined) {
     pass = null;
   } else {
-    pass = req.body._password;
+    pass = req.body.password;
   }
   let updateUser: User | null = userDB.updateUser(
     id,
@@ -190,10 +200,11 @@ userRouter.delete("/:ID", (req, res, next) => {
       .json({ message: "User succesffully deleted from the database" });
   } else {
     res.status(404).json({
-      message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
+      message: `Error: user with userId = ${id} not found in the database and could not be deleted`,
     });
   }
 });
 
-export { userRouter };
+export { adminU };
+export { userRouter as userRouter };
 export { userDB };

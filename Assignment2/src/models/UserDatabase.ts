@@ -14,29 +14,29 @@ class UserDatabase {
     let addedUser: User | null = newUser;
     if (this.size === 0) {
       this.userArray.push(newUser);
-      this.records[addedUser.UserID] = { record: newUser };
+      this.records[addedUser.userId] = { record: newUser };
       this.size++;
-    } else if (newUser.UserID.length === 0) {
+    } else if (newUser.userId.length === 0) {
       return null;
     } else {
       this.userArray.forEach(function (value: User) {
-        // if we find a user with a matching UserID,
+        // if we find a user with a matching userId,
         // we need to return null and not add the user to the DB
-        if (value.UserID === newUser.UserID) {
+        if (value.userId === newUser.userId) {
           addedUser = null;
           return addedUser;
         }
       });
     }
     this.userArray.push(addedUser);
-    this.records[addedUser.UserID] = { record: addedUser };
+    this.records[addedUser.userId] = { record: addedUser };
     this.size++;
     return addedUser;
   }
   public findUser(userID: string): User | null {
     let foundUser: User | null = null;
     this.userArray.forEach(function (value: User) {
-      if (value.UserID === userID) {
+      if (value.userId === userID) {
         foundUser = value;
       }
     });
@@ -46,7 +46,7 @@ class UserDatabase {
   public indexOfUser(userID: string): number | null {
     let userIndex: number | null = null;
     for (let i = 0; i < this.userArray.length; i++) {
-      if (this.userArray[i].UserID === userID) {
+      if (this.userArray[i].userId === userID) {
         userIndex = i;
         break;
       }
@@ -67,7 +67,7 @@ class UserDatabase {
     return this.userArray.length;
   }
   public getUser(userID: string): User | null {
-    if (this.records[userID].record.UserID === userID) {
+    if (this.records[userID].record.userId === userID) {
       return this.records[userID].record;
     } else {
       return null;
@@ -86,16 +86,16 @@ class UserDatabase {
     if (updateUser !== null && userIndex !== null) {
       // if we were able to find the user in the database
       if (fName !== null) {
-        this.userArray[userIndex].FirstName = fName;
+        this.userArray[userIndex].firstName = fName;
       }
       if (lName !== null) {
-        this.userArray[userIndex].LastName = lName;
+        this.userArray[userIndex].lastName = lName;
       }
       if (email !== null) {
-        this.userArray[userIndex].EmailAddress = email;
+        this.userArray[userIndex].emailAddress = email;
       }
       if (pass !== null) {
-        this.userArray[userIndex]._password = pass;
+        this.userArray[userIndex].password = pass;
       }
       return this.userArray[userIndex];
     } else {
@@ -107,7 +107,7 @@ class UserDatabase {
     // let objJSON = JSON.parse(objString);
     let array = [];
     let obj: UserRecord = {};
-    this.userArray.forEach((item) => (obj[item.UserID] = item.toJSON()));
+    this.userArray.forEach((item) => (obj[item.userId] = item.toJSON()));
 	let stringArray = [] as JSON[];
 	this.userArray.forEach(function (entry) {
 		stringArray.push(JSON.parse(entry.toJSON()));
