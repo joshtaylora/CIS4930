@@ -9,6 +9,7 @@ const path_1 = __importDefault(require("path"));
 const UserRouter_1 = require("./routes/UserRouter");
 const UserRouter_2 = require("./routes/UserRouter");
 const PostRouter_1 = require("./routes/PostRouter");
+// export const ACCESS_TOKEN_SECRET = ;
 // console.log(path.join(process.cwd(), "views", "help.html"));
 // create the express application
 let app = express_1.default();

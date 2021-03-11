@@ -5,6 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userDB = exports.userRouter = void 0;
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+// user import's
 const User_1 = require("../models/User");
 const UserDatabase_1 = require("../models/UserDatabase");
 //* =================================================================================== */
@@ -43,22 +46,99 @@ userRouter.post("/", (req, res, next) => {
     // grab the UserID string
     let userIDString = req.body.UserID;
     // create new User object using the specified parameters
-    let addedUser = userDB.addUser(new User_1.User(req.body.UserID, req.body.FirstName, req.body.LastName, req.body.EmailAddress, req.body._password));
+    let addedUser = userDB.findUser(req.body.UserID);
     // if a User with the specified UserID does not already exist, create one
-    if (addedUser !== null) {
-        res
-            .type("json")
-            .status(201)
-            .json(JSON.parse(addedUser.toJSON()));
+    if (addedUser === null) {
+        bcrypt_1.default.genSalt(10, function (err, salt) {
+            bcrypt_1.default.hash(req.body._password, salt, function (err, hash) {
+                let newUser = new User_1.User(req.body.UserID, req.body.FirstName, req.body.LastName, req.body.EmailAddress, hash);
+                console.log(hash);
+                userDB.addUser(newUser);
+                res.status(201).json(JSON.parse(newUser.toJSON()));
+            });
+        });
     }
     else {
         console.log("User could not be added to database");
         // send the 201 status message and the stringified version of the User JSON object
         res
-            .status(404)
+            .status(409)
             .send("User could not be added to the database successfully");
     }
     console.log(userDB.toJSON);
+});
+/**
+ * Login Endpoint
+ * Method: GET
+ * URL: /Users/Login/{UserID}/{Password}
+ * Description: login endpoint that verifies the user's authenticity
+ */
+userRouter.get("/Login/:UserID/:Password", (req, res, next) => {
+    let userLogin = userDB.findUser(req.params.UserID);
+    if (userLogin !== null) {
+        console.log(`user's password: ${userLogin._password}, password entered: ${req.params.Password}`);
+        // let hash = userLogin._password;
+        bcrypt_1.default.compare(req.params.Password, userLogin._password, function (err, result) {
+            if (result && userLogin) {
+                // generate a jwt token for the authorization token
+                let token = jsonwebtoken_1.default.sign({ UserID: userLogin.UserID, FirstName: userLogin.FirstName }, "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag", { expiresIn: 100, subject: userLogin.UserID });
+                // returns a cookie that has the token so you don't need to include the headers
+                res.cookie('AuthToken', token);
+                res.status(200).send(token);
+            }
+            else {
+                res.status(401).send({ message: "Invalid Username and Password" });
+            }
+        });
+    }
+    else {
+        res.status(401).send({ message: "User could not be found in the system" });
+    }
+});
+/**
+ * Method: DELETE
+ * URL: /User/delete
+ */
+userRouter.delete("/:UserID", (req, res, next) => {
+    if (req.headers.authorization) {
+        try {
+            /* Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag */
+            // SPlit the authorization token since the token will have 'Bearer: ' before the token
+            let tokenPayload = jsonwebtoken_1.default.verify(req.headers.authorization.split(' ')[1].toString(), "Mz8YXF6ZxLIAUX_mTJ-SwTLm-QRLwPLLdMoW3XKhzag");
+            console.log(tokenPayload);
+            // Check if the token's UserID is equal to the UserID for the user attempting to be deleted
+            if (tokenPayload.UserID === req.params.UserID) {
+                userDB.deleteUser(req.params.UserID);
+                res.status(200).send('User deleted');
+            }
+            else {
+                res
+                    .status(401)
+                    .send({
+                    message: "Error: you can only delete the user that is logged in.",
+                });
+            }
+        }
+        catch (ex) { }
+    }
+});
+userRouter.post("/delete", (req, res, next) => {
+    console.log(req.headers.token);
+    let id = req.body.UserID;
+    // delete user
+    let result = userDB.deleteUser(id);
+    if (result === true) {
+        res
+            .status(200)
+            .type("json")
+            .send({ message: "User succesffully deleted from the database" });
+    }
+    else {
+        res.status(404).json({
+            message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
+            UserDatabase: `${userDB.toJSON()}`,
+        });
+    }
 });
 /**
  * Method: GET
@@ -88,22 +168,11 @@ userRouter.get("/:ID", (req, res, next) => {
         return;
     }
     // send the 200 OK since we found the user
-    res.status(200).type('json').send(JSON.parse(JSON.stringify(user)));
+    res
+        .status(200)
+        .type("json")
+        .send(JSON.parse(JSON.stringify(user)));
     console.log(JSON.parse(JSON.stringify(user)));
-});
-userRouter.post("/delete", (req, res, next) => {
-    let id = req.body.UserID;
-    // delete user
-    let result = userDB.deleteUser(id);
-    if (result === true) {
-        res.status(200).type('json').send({ message: "User succesffully deleted from the database" });
-    }
-    else {
-        res.status(404).json({
-            message: `Error: user with UserID = ${id} not found in the database and could not be deleted`,
-            UserDatabase: `${userDB.toJSON()}`,
-        });
-    }
 });
 userRouter.patch("/:ID", (req, res, next) => {
     let id = req.params.ID;
@@ -139,7 +208,7 @@ userRouter.patch("/:ID", (req, res, next) => {
     let updateUser = userDB.updateUser(id, fname, lname, email, pass);
     // ensure that we were able to update the user
     if (updateUser !== null) {
-        res.status(200).type('json').send(`${updateUser.toJSON()}`);
+        res.status(200).type("json").send(`${updateUser.toJSON()}`);
         console.log(`UPDATED USER\n${updateUser.toJSON()}`);
     }
     else {
