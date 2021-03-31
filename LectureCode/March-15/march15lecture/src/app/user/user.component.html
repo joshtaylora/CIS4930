@@ -1,0 +1,23 @@
+<h2>Users</h2>
+<ul class="users">
+  <li *ngFor="let user of users">
+    <div class="container">
+      <div class="card">
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+        <div class="card-body">
+          <h5 class="card-title">{{ user.userId }}</h5>
+          <table class="col card-text">
+            <tr>
+              <td>First name: {{ user.firstName }}</td>
+              <td>Last name: {{ user.lastName }}</td>
+            </tr>
+            <tr>
+              <td colspan="2">Email address: {{ user.emailAddress }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+

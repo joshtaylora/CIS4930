@@ -1,0 +1,16 @@
+<app-nav></app-nav>
+<br/>
+<app-user></app-user>
+<br>
+<app-user-form></app-user-form>
+<button (click)="AddBook()">Add Book</button>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <app-book *ngFor="let b of ary"></app-book>
+        </div>
+        <div class="col-sm">
+            <app-bookdetails></app-bookdetails>
+        </div>
+    </div>
+</div>
