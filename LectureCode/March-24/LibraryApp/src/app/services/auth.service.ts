@@ -10,20 +10,14 @@ export class AuthService implements CanActivate{
   constructor(private userSvc: UserService, private router:Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state:RouterStateSnapshot):boolean {
-    let logInStatus = localStorage.getItem('userIsLoggedIn');
-    let userLoggedIn:boolean;
-    if (logInStatus !=null)
-    {
-      userLoggedIn = JSON.parse(logInStatus);
-    } else {
-      userLoggedIn = false;
-    }
-
-    if (!userLoggedIn)
+    let userInfo = this.userSvc.GetLoggedInUser();
+    console.log(userInfo);
+    if(userInfo===null)
     {
       this.router.navigate(['/login']);
+      return false;
     }
-
-    return userLoggedIn;
+    else
+      return true;
   }
 }
