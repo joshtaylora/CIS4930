@@ -17,6 +17,10 @@ export class User {
     this.emailAddress = emailAddress;
     this.password = password;
   }
+  public toJSON() {
+    return JSON.stringify(Object.assign({}, {userId: this.userId, firstName: this.firstName, lastName: this.lastName, emailAddress: this.emailAddress}));
+}
+ 
 }
 
 let USERS: User[] = [];

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/mock-users';
-import { UserService } from '../../user.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -8,7 +8,6 @@ import { UserService } from '../../user.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  constructor(private userService: UserService) {}
 
   firstName: string = '';
   lastName: string = '';
@@ -16,13 +15,18 @@ export class RegisterComponent implements OnInit {
   userId: string = '';
   password: string = '';
 
-  userData: {firstname: string, lastName: string, emailAddress:string, userId: string, password: string}|null = null;
+  userInfo: { userId: string, firstName: string, lastName: string, emailAddress:string, password: string}|null = null;
 
   user:User|null = null
 
   message:string = '';
 
   success:boolean = false;
+
+
+  constructor(private userService: UserService) {
+    this.userInfo = { userId: '', firstName: '', lastName: '', emailAddress: '', password: ''}
+  }
 
 
   ngOnInit(): void {
@@ -34,20 +38,16 @@ export class RegisterComponent implements OnInit {
     this.message = 'An error has occurred';
   }
 
-  CreateUser(): void {
-    if (this.user !== null) {
-    this.userService.CreateUser(this.userData);
-  }
-}
+  // CreateUser(): void {
+  //   if (this.user !== null) {
+  //     this.userService.CreateUser(this.userInfo);
+  //   }
+  // }
 
   onSubmit(): void {
-    this.user = new User(
-      this.userId,
-      this.firstName,
-      this.lastName,
-      this.emailAddress,
-      this.password 
-    );
-    this.userService.addUser(this.user);
+    
+    if (this.userInfo !== null) {
+      this.userService.CreateUser(this.userInfo);
+    }
   }
 }

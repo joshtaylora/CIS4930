@@ -10,7 +10,7 @@ import { NavbarComponent } from './comp/navbar/navbar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { PostListComponent } from './post-list/post-list.component';
-import { UserListComponent } from './user-list/user-list.component';
+import { UserListComponent } from './views/user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({

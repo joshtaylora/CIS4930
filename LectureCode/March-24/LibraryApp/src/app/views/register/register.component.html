@@ -8,7 +8,7 @@
         id="txtUserId"
         name="txtUserId"
         placeHolder="JohnDoeUserName"
-        [(ngModel)]="userId"
+        [(ngModel)]="userInfo!.userId"
       />
       <label for="txtFirstName">First Name</label>
       <input
@@ -17,7 +17,7 @@
         id="txtFirstName"
         name="txtFirstName"
         placeholder="John"
-        [(ngModel)]="firstName"
+        [(ngModel)]="userInfo!.firstName"
       />
       <label for="txtLastName">Last Name</label>
       <input
@@ -26,7 +26,7 @@
         id="txtLastName"
         name="txtLastName"
         placeholder="Doe"
-        [(ngModel)]="lastName"
+        [(ngModel)]="userInfo!.lastName"
       />
       <label for="emailUserEmail">Email address</label>
       <input
@@ -36,7 +36,7 @@
         name="emailUserEmail"
         aria-describedby="emailHelp"
         placeholder="Enter email"
-        [(ngModel)]="emailAddress"
+        [(ngModel)]="userInfo!.emailAddress"
       />
       <small id="emailHelp" class="form-text text-muted"
         >We'll never share your email with anyone else.</small
@@ -49,7 +49,7 @@
         class="form-control"
         id="pswdUserPassword"
         name="pswdUserPassword"
-        [(ngModel)]="password"
+        [(ngModel)]="userInfo!.password"
       />
     </div>
     <div *ngIf="message != ''" [ngClass]="{'alert-danger':!success, 'alert-success':success}" class="alert" role="alert">
