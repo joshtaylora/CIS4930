@@ -3,8 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
 import jwt_decode from 'jwt-decode';
-
-import { User, USERS } from '../mock-users';
+// dev imports
+import { PostService } from './post.service';
+import { Post } from '../post';
+import { User} from '../models/user.model';
+import { Token } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +22,12 @@ export class UserService {
   userIsLoggedIn: boolean = false;
   userName = 'admin';
   password = 'JoshTaylor';
-  users = USERS;
+  //users = USERS;
 
   Login(userName: string, password: string) {
     // CORS implementation in express app
     return this.httpC.get<{ token: string }>(
-      `https://localhost:3000/Users/${userName}/${password}`
+      `http://localhost:3000/Users/${userName}/${password}`
     );
   }
 
@@ -50,17 +53,19 @@ export class UserService {
     this.UserStateChanged.emit(true);
   }
 
-  SetUserAsLoggedOff(userToken: { token: string }) {
+  SetUserAsLoggedOff() {
     localStorage.removeItem('token');
     this.UserStateChanged.emit(false);
   }
 
-  GetLoggedInUser() {
+  GetLoggedInUser(): Token | null {
     let tokenStr = localStorage.getItem('token');
     if (tokenStr !== null) {
       let tokenObj = JSON.parse(tokenStr) as { token: string };
-      let tokenInfo = jwt_decode(tokenObj.token);
+      let tokenInfo = <Token>jwt_decode(tokenObj.token);
       return tokenInfo;
+    } else {
+      return null;
     }
   }
 
@@ -72,7 +77,9 @@ export class UserService {
     return this.httpC.get<User>(`https://localhost:3000/Users/${userName}`);
   }
 
-  addUser(user: User) {
-    this.users.push(user);
+  getUsersPosts(userId: string): Observable<Post[]> {
+    let url = this.usersURL + 'Posts/' + userId;
+    return this.httpC.get<Post[]>(url);
   }
+
 }

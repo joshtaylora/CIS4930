@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/mock-users';
+import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class RegisterComponent implements OnInit {
   // }
 
   onSubmit(): void {
-    
+
     if (this.userInfo !== null) {
       this.userService.CreateUser(this.userInfo);
     }

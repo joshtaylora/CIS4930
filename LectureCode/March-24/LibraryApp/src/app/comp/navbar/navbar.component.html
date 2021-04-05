@@ -12,6 +12,22 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/Users']">Users</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/Posts']">Posts</a>
+        </li>
+      </ul>
+    </div>
+    <button
+      class="btn btn secondary"
+      type="button"
+      data-toggle=""
+    >
+    </button>
     <div class="nav navbar-nav navbar-right">
       <!-- <button class="btn btn-secondary" [routerLink]="['/login']" type="button">
         <fa-icon [icon]="faSignInIcon"></fa-icon> Login

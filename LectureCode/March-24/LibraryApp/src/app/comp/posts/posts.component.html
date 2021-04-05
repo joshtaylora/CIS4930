@@ -1,0 +1,58 @@
+<header
+  class="masthead"
+  style="background-image: url('assets/img/blog-page-head-img.jpg')"
+>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 co-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Blog Posts</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="container-md m-5">
+  <div class="row">
+    <ul class="col-6 list-group">
+      <li
+        class="list-group-item"
+        [ngClass]="{
+          'list-group-item-success': selectedPost === post,
+          'text-white bg-dark': selectedPost !== post
+        }"
+        *ngFor="let post of posts"
+        [class.selected]="post === selectedPost"
+        (click)="onSelect(post)"
+      >
+        <span class="badge">{{ post.userId }}</span> {{ post.title }}
+      </li>
+    </ul>
+
+    <div class="col-6" *ngIf="selectedPost">
+      <div class="card text-white bg-dark mb-3">
+        <div class="card-header">
+          {{ selectedPost.userId }}
+          <a
+            class="badge badge-secondary"
+            [routerLink]="['/Users', 'Posts', selectedPost.userId]"
+            >Go to {{ selectedPost.userId }}'s Posts</a
+          >
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ selectedPost.title }}</h5>
+          <p class="card-text">{{ selectedPost.content }}</p>
+          <footer class="blockquote-footer">
+            created on: {{ selectedPost.createdDate }}
+          </footer>
+
+          <a
+            class="btn btn-primary"
+            [routerLink]="['/Posts', selectedPost.postId]"
+          >Go to Post</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

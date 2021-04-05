@@ -27,8 +27,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {}
 
+
+
   LogoutUser() {
-    localStorage.removeItem('userIsLoggedIn');
+    this.userSvc.SetUserAsLoggedOff();
     this.userIsLoggedIn = false;
     this.router.navigate(['/login']);
   }

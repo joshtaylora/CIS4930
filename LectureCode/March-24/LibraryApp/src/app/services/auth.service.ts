@@ -12,8 +12,10 @@ export class AuthService implements CanActivate{
   canActivate(route: ActivatedRouteSnapshot, state:RouterStateSnapshot):boolean {
     let userInfo = this.userSvc.GetLoggedInUser();
     console.log(userInfo);
-    if(userInfo===null)
+    if(userInfo===null || new Date(userInfo!.exp*1000) < new Date() || userInfo === undefined)
     {
+      // emit that the user has been logged off
+      this.userSvc.SetUserAsLoggedOff();
       this.router.navigate(['/login']);
       return false;
     }

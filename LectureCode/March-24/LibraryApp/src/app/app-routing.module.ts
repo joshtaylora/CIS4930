@@ -1,43 +1,56 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostListComponent } from './post-list/post-list.component';
+import { PostListComponent } from './views/post-list/post-list.component';
 import { AuthService } from './services/auth.service';
-import { UserListComponent } from './views/user-list/user-list.component';
+import { UsersComponent } from './comp/users/users.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import { UserHomeComponent } from './views/user-home/user-home.component';
+import { PostsComponent } from './comp/posts/posts.component';
+import { PostDetailComponent } from './comp/post-detail/post-detail.component';
+
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
-    path: 'login', 
-    component: LoginComponent
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
   },
   {
     path: 'home',
     component: HomeComponent,
-    canActivate: [AuthService]
+    canActivate: [AuthService],
   },
   {
-    path: 'posts',
-    component: PostListComponent
+    path: 'Posts',
+    component: PostsComponent,
   },
   {
-    path: 'users',
-    component: UserListComponent
-  }
+    path: 'Posts/:postId',
+    component: PostDetailComponent
+  },
+
+  {
+    path: 'Users/Posts/:userId',
+    component: UserHomeComponent,
+  },
+  {
+    path: 'Users',
+    component: UsersComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

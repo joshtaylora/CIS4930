@@ -18,33 +18,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   LoginUser(): void {
-    // if (
-    //   this.userAuthInfo?.userName !== undefined &&
-    //   this.userAuthInfo.password !== undefined
-    // ) {
-    //   let result = this.userService.Login(
-    //     this.userAuthInfo!.userName,
-    //     this.userAuthInfo!.password
-    //   );
-    //   if (result) {
-    //     this.success = true;
-    //     this.message = 'You have been successfully logged in';
-    //     setTimeout(() => {
-    //       this.router.navigate(['/home']);
-    //     });
-    //   } else {
-    //     this.success = false;
-    //     this.message = 'Error, the username and password were not correct';
-    //   }
-    // }
-    if (
-      this.userAuthInfo !== null
-    ) {
+    if (this.userAuthInfo?.userName !== undefined && this.userAuthInfo.password !== undefined) {
       this.userService
         .Login(this.userAuthInfo?.userName, this.userAuthInfo?.password)
         .subscribe(
           (response) => {
             console.log(response.token);
+            this.userService.SetUserLoggedIn(response);
+            this.router.navigate(['/home']);
+            this.success = true;
+            this.message = 'User has successfully logged in';
           },
           (error) => {
             this.success = false;

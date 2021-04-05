@@ -1,4 +1,4 @@
-class Post {
+export class Post {
     postId:         number;
     createdDate:    string;
     title:          string;
