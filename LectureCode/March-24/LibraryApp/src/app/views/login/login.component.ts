@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log(response.Authorization);
+            this.success = true;
             this.userService.SetUserLoggedIn(response);
             this.router.navigate(['/home']);
           },

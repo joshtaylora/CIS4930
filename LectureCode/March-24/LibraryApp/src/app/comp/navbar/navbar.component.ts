@@ -17,20 +17,25 @@ export class NavbarComponent implements OnInit {
 
   currentUser: Token | null = null;
 
-  constructor(private userSvc: UserService, private router: Router) {
+  constructor(private userSvc: UserService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.getToken();
+  }
+
+  getToken(): void {
     let userLoggedIn = this.userSvc.GetLoggedInUser();
     if (userLoggedIn !== null) {
       this.userIsLoggedIn = true;
       this.currentUser = userLoggedIn;
-    }
 
+    }
     this.userSvc.UserStateChanged.subscribe((userLoggedInMsg) => {
       this.userIsLoggedIn = userLoggedInMsg;
       this.currentUser = userLoggedIn;
     });
   }
 
-  ngOnInit(): void {}
 
   LogoutUser() {
     this.userSvc.SetUserAsLoggedOff();

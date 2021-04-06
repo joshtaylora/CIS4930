@@ -2,6 +2,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
 import { Post } from '../mock-posts';
 
 @Injectable({
@@ -12,15 +13,14 @@ export class PostService {
 
   constructor(private httpC: HttpClient) {}
 
-  private baseURL = 'http://localhost:3000/Posts/';
 
   userIsLoggedIn: boolean = false;
 
   getPosts(): Observable<Post[]> {
-    return this.httpC.get<Post[]>(this.baseURL);
+    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Posts`);
   }
 
   getPost(postId: number): Observable<Post> {
-    return this.httpC.get<Post>(`http://localhost:3000/Posts/${postId}`);
+    return this.httpC.get<Post>(`${environment.BASE_URL}/Posts/${postId}`);
   }
 }

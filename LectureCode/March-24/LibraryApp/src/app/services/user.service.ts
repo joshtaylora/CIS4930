@@ -49,7 +49,6 @@ export class UserService {
 
   SetUserLoggedIn(userToken: { Authorization: string }) {
     localStorage.setItem('token', JSON.stringify(userToken));
-    console.log(userToken);
     this.UserStateChanged.emit(true);
   }
 
@@ -61,8 +60,8 @@ export class UserService {
   GetLoggedInUser(): Token | null {
     let tokenStr = localStorage.getItem('token');
     if (tokenStr !== null) {
-      let tokenObj = JSON.parse(tokenStr) as { token: string };
-      let tokenInfo = <Token>jwt_decode(tokenObj.token);
+      let tokenObj = JSON.parse(tokenStr) as { Authorization: string };
+      let tokenInfo = <Token>jwt_decode(tokenObj.Authorization);
       return tokenInfo;
     } else {
       return null;
