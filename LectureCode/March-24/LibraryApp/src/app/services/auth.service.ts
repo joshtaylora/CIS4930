@@ -17,7 +17,7 @@ export class AuthService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    let userInfo = this.userSvc.GetLoggedInUser();
+    let userInfo = this.userSvc.getLoggedInUser();
     console.log(userInfo);
     if (
       userInfo === null ||

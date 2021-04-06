@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import jwt_decode from 'jwt-decode';
 // dev imports
@@ -15,13 +15,16 @@ import { Token } from '../models/token.model';
 })
 export class UserService {
   @Output() UserStateChanged = new EventEmitter<boolean>();
-
-  constructor(private httpC: HttpClient) {}
+  private defaultUser = new User('default', 'default', 'default', 'default', 'default');
+  private userSource = new BehaviorSubject(this.defaultUser);
 
   userIsLoggedIn: boolean = false;
   userId = 'admin';
   password = 'JoshTaylor';
   //users = USERS;
+
+
+  constructor(private httpC: HttpClient) {}
 
   Login(userId: string, password: string) {
     // CORS implementation in express app
@@ -57,7 +60,7 @@ export class UserService {
     this.UserStateChanged.emit(false);
   }
 
-  GetLoggedInUser(): Token | null {
+  getLoggedInUser(): Token | null {
     let tokenStr = localStorage.getItem('token');
     if (tokenStr !== null) {
       let tokenObj = JSON.parse(tokenStr) as { Authorization: string };
@@ -67,6 +70,10 @@ export class UserService {
       return null;
     }
   }
+
+  // GetLoggedInUser(user: User): void {
+  //   this.userSource.next(user);
+  // }
 
   getUsers(): Observable<User[]> {
     return this.httpC.get<User[]>(`${environment.BASE_URL}/Users`);

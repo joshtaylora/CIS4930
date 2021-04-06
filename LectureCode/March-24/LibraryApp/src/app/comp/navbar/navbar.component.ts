@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+
+import { User } from 'src/app/models/user.model';
 import { Token } from 'src/app/models/token.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -24,7 +26,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getToken(): void {
-    let userLoggedIn = this.userSvc.GetLoggedInUser();
+    let userLoggedIn = this.userSvc.getLoggedInUser();
     if (userLoggedIn !== null) {
       this.userIsLoggedIn = true;
       this.currentUser = userLoggedIn;
@@ -37,7 +39,7 @@ export class NavbarComponent implements OnInit {
   }
 
 
-  LogoutUser() {
+  logoutUser() {
     this.userSvc.SetUserAsLoggedOff();
     this.userIsLoggedIn = false;
     this.router.navigate(['/login']);

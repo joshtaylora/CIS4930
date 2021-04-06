@@ -42,7 +42,7 @@
 
       <button *ngIf="!userIsLoggedIn" class="btn btn-secondary" [routerLink]="['/login']" type="button"><fa-icon [icon]='faSignInIcon'></fa-icon> Login</button>
       <button *ngIf="!userIsLoggedIn" class="btn btn-secondary" [routerLink]="['/register']" type="button"><fa-icon [icon]='faRegisterIcon'></fa-icon> Register</button>
-      <button *ngIf="userIsLoggedIn" class="btn btn-secondary" (click)="LogoutUser()"  type="button"><fa-icon [icon]='faRegisterIcon'></fa-icon> Logout</button>
+      <button *ngIf="userIsLoggedIn" class="btn btn-secondary" (click)="logoutUser()"  type="button"><fa-icon [icon]='faRegisterIcon'></fa-icon> Logout</button>
 
     </div>
   </div>

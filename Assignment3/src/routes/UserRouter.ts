@@ -21,7 +21,7 @@ userRouter.get("/", (req, res, next) => {
       return;
     }
     console.log({ method: "get", route: "/Users/", message: rows });
-    res.status(200).json(rows);
+    res.status(200).send(rows);
   });
 });
 
@@ -103,10 +103,7 @@ userRouter.get("/:userId", (req, res, next) => {
       return;
     } else {
       console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-      res.status(201).json({
-        message: "success",
-        data: row[0],
-      });
+      res.status(201).send(row[0]);
       return;
     }
   });
@@ -219,14 +216,11 @@ userRouter.post("/", (req, res, next) => {
                 message: `New user: ${JSON.stringify(newUser)}`,
               });
               console.log(`password: ${hash}`);
-              res.status(200).json({
-                message: `User successfully created`,
-                data: {
-                  userId: req.body.userId,
-                  firstName: req.body.firstName,
-                  lastName: req.body.lastName,
-                  emailAddress: req.body.emailAddress,
-                },
+              res.status(200).send({
+                userId: req.body.userId,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                emailAddress: req.body.emailAddress,
               });
               return;
             }
@@ -531,6 +525,8 @@ userRouter.get("/:userId/:password", (req, res, next) => {
           });
           return;
         } else {
+          let userIdStr = JSON.stringify(row[0].password);
+          let userId = userIdStr.replace(/['"]+/g, "");
           // enters this block if the passwords do match
           let authorization = jwt.sign({ userId: req.params.userId }, secret, {
             expiresIn: 60 * 60,

@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
         .Login(this.userAuthInfo?.userName, this.userAuthInfo?.password)
         .subscribe(
           (response) => {
-            console.log(response.Authorization);
             this.success = true;
             this.userService.SetUserLoggedIn(response);
             this.router.navigate(['/home']);
