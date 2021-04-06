@@ -65,6 +65,7 @@ export class UserService {
     if (tokenStr !== null) {
       let tokenObj = JSON.parse(tokenStr) as { Authorization: string };
       let tokenInfo = <Token>jwt_decode(tokenObj.Authorization);
+      console.log(tokenInfo);
       return tokenInfo;
     } else {
       return null;
@@ -84,7 +85,7 @@ export class UserService {
   }
 
   getUsersPosts(userId: string): Observable<Post[]> {
-    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Users/${userId}`);
+    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Users/Posts/${userId}`);
   }
 
 }

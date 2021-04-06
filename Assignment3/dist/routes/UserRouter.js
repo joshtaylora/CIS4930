@@ -8,6 +8,7 @@ const express_1 = __importDefault(require("express"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const index_1 = require("../index");
 const database_1 = require("../db/database");
+const User_1 = require("../models/User");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const userRouter = express_1.default.Router();
@@ -24,7 +25,7 @@ userRouter.get("/", (req, res, next) => {
             return;
         }
         console.log({ method: "get", route: "/Users/", message: rows });
-        res.status(200).json(rows);
+        res.status(200).send(rows);
     });
 });
 userRouter.get("/Posts/:userId", (req, res, next) => {
@@ -108,10 +109,7 @@ userRouter.get("/:userId", (req, res, next) => {
         }
         else {
             console.log({ method: "get", route: "/Users/:userId", message: row[0] });
-            res.status(201).json({
-                message: "success",
-                data: row[0],
-            });
+            res.status(201).send(row[0]);
             return;
         }
     });
@@ -219,14 +217,11 @@ userRouter.post("/", (req, res, next) => {
                                 message: `New user: ${JSON.stringify(newUser)}`,
                             });
                             console.log(`password: ${hash}`);
-                            res.status(200).json({
-                                message: `User successfully created`,
-                                data: {
-                                    userId: req.body.userId,
-                                    firstName: req.body.firstName,
-                                    lastName: req.body.lastName,
-                                    emailAddress: req.body.emailAddress,
-                                },
+                            res.status(200).send({
+                                userId: req.body.userId,
+                                firstName: req.body.firstName,
+                                lastName: req.body.lastName,
+                                emailAddress: req.body.emailAddress,
                             });
                             return;
                         }
@@ -478,7 +473,7 @@ userRouter.delete("/:userId", (req, res, next) => {
  * Login
  */
 userRouter.get("/:userId/:password", (req, res, next) => {
-    let sqlPassword = "select password from Users where userId=$userId";
+    let sqlPassword = "select * from Users where userId=$userId";
     let paramsPassword = { $userId: req.params.userId };
     database_1.db.all(sqlPassword, paramsPassword, (err, row) => {
         if (err) {
@@ -498,8 +493,18 @@ userRouter.get("/:userId/:password", (req, res, next) => {
             return;
         }
         else {
+            let userIdStr = JSON.stringify(row[0].userId);
+            let userId = userIdStr.replace(/['"]+/g, "");
+            let firstNameStr = JSON.stringify(row[0].firstName);
+            let firstName = firstNameStr.replace(/['"]+/g, "");
+            let lastNameStr = JSON.stringify(row[0].lastName);
+            let lastName = lastNameStr.replace(/['"]+/g, "");
+            let emailAddrStr = JSON.stringify(row[0].emailAddress);
+            let emailAddr = emailAddrStr.replace(/['"]+/g, "");
             let passString = JSON.stringify(row[0].password);
             let pass = passString.replace(/['"]+/g, "");
+            let user = new User_1.User(userId, firstName, lastName, emailAddr, pass);
+            let userJSON = user.toJSON();
             // if we were able to find the password, decrypt it and compare to the password passed as a request url param
             bcrypt.compare(req.params.password, pass, (err, result) => {
                 if (err) {
@@ -523,7 +528,15 @@ userRouter.get("/:userId/:password", (req, res, next) => {
                 }
                 else {
                     // enters this block if the passwords do match
-                    let authorization = jsonwebtoken_1.default.sign({ userId: req.params.userId }, index_1.secret, {
+                    let authorization = jsonwebtoken_1.default.sign({
+                        UserData: {
+                            userId: user.userId,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            emailAddress: user.emailAddress,
+                            password: user.password,
+                        },
+                    }, index_1.secret, {
                         expiresIn: 60 * 60,
                         subject: req.params.userId,
                     });

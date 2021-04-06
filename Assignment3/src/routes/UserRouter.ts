@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { secret } from "../index";
 import { db } from "../db/database";
+import { User } from "../models/User";
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -485,7 +486,7 @@ userRouter.delete("/:userId", (req, res, next) => {
  * Login
  */
 userRouter.get("/:userId/:password", (req, res, next) => {
-  let sqlPassword = "select password from Users where userId=$userId";
+  let sqlPassword = "select * from Users where userId=$userId";
   let paramsPassword = { $userId: req.params.userId };
   db.all(sqlPassword, paramsPassword, (err: any, row: any) => {
     if (err) {
@@ -503,8 +504,23 @@ userRouter.get("/:userId/:password", (req, res, next) => {
       });
       return;
     } else {
+      let userIdStr = JSON.stringify(row[0].userId);
+      let userId = userIdStr.replace(/['"]+/g, "");
+
+      let firstNameStr = JSON.stringify(row[0].firstName);
+      let firstName = firstNameStr.replace(/['"]+/g, "");
+
+      let lastNameStr = JSON.stringify(row[0].lastName);
+      let lastName = lastNameStr.replace(/['"]+/g, "");
+
+      let emailAddrStr = JSON.stringify(row[0].emailAddress);
+      let emailAddr = emailAddrStr.replace(/['"]+/g, "");
+
       let passString = JSON.stringify(row[0].password);
       let pass = passString.replace(/['"]+/g, "");
+
+      let user = new User(userId, firstName, lastName, emailAddr, pass);
+      let userJSON = user.toJSON();
       // if we were able to find the password, decrypt it and compare to the password passed as a request url param
       bcrypt.compare(req.params.password, pass, (err: any, result: boolean) => {
         if (err) {
@@ -525,13 +541,23 @@ userRouter.get("/:userId/:password", (req, res, next) => {
           });
           return;
         } else {
-          let userIdStr = JSON.stringify(row[0].password);
-          let userId = userIdStr.replace(/['"]+/g, "");
           // enters this block if the passwords do match
-          let authorization = jwt.sign({ userId: req.params.userId }, secret, {
-            expiresIn: 60 * 60,
-            subject: req.params.userId,
-          });
+          let authorization = jwt.sign(
+            {
+              UserData: {
+                userId: user.userId,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                emailAddress: user.emailAddress,
+                password: user.password,
+              },
+            },
+            secret,
+            {
+              expiresIn: 60 * 60,
+              subject: req.params.userId,
+            }
+          );
           console.log("token successfully created");
           console.log({
             response: {

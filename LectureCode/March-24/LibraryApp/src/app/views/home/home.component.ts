@@ -12,7 +12,9 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  posts: Post[] = [];
+  user: User | null = null;
+  posts: Post[] | null = null;
+  selectedPost?: Post;
   userIsLoggedIn: boolean = false;
 
   constructor(private router: Router, private userSvc: UserService, private postSvc: PostService) {
@@ -20,19 +22,27 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPosts();
+    let userToken = this.userSvc.getLoggedInUser();
+    if (userToken !== null && userToken.UserData !== undefined) {
+      this.getPosts();
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
+
+
 
   getPosts(): void {
     let userToken = this.userSvc.getLoggedInUser();
     console.log(userToken);
     if (userToken !== null && userToken.UserData !== undefined) {
       this.userIsLoggedIn = true;
+      this.user = userToken.UserData;
       this.userSvc.getUsersPosts(userToken.UserData.userId).subscribe((postArray) => {
         this.posts = postArray;
-        console.log(this.posts);
       }, (err)=> {
         console.log(err);
+        this.router.navigate(['/login']);
       });
     } else {
       this.userIsLoggedIn = false;
@@ -40,4 +50,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  onSelect(post: Post): void {
+    this.selectedPost = post;
+  }
 }
