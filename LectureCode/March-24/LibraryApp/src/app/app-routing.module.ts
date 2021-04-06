@@ -10,7 +10,6 @@ import { UserHomeComponent } from './views/user-home/user-home.component';
 import { PostsComponent } from './comp/posts/posts.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -36,7 +35,7 @@ const routes: Routes = [
   },
   {
     path: 'Posts/:postId',
-    component: PostDetailComponent
+    component: PostDetailComponent,
   },
 
   {

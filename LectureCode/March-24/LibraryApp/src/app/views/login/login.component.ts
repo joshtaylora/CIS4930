@@ -23,15 +23,14 @@ export class LoginComponent implements OnInit {
         .Login(this.userAuthInfo?.userName, this.userAuthInfo?.password)
         .subscribe(
           (response) => {
-            console.log(response.token);
+            console.log(response.Authorization);
             this.userService.SetUserLoggedIn(response);
             this.router.navigate(['/home']);
-            this.success = true;
-            this.message = 'User has successfully logged in';
           },
           (error) => {
             this.success = false;
-            this.message = error.error.messsage;
+            this.message = error.message;
+            console.log(JSON.stringify(error.message));
           }
         );
     }

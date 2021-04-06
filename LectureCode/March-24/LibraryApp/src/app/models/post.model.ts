@@ -24,3 +24,4 @@ export class Post {
     this.lastUpdated = lastUpdated;
   }
 }
+

@@ -24,10 +24,7 @@ userRouter.get("/", (req, res, next) => {
             return;
         }
         console.log({ method: "get", route: "/Users/", message: rows });
-        res.status(200).json({
-            message: "success",
-            data: rows,
-        });
+        res.status(200).json(rows);
     });
 });
 userRouter.get("/Posts/:userId", (req, res, next) => {
@@ -35,7 +32,7 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
     // check to see if the user exists in the system first
     let userQuery = "select * from Users where userId = $userId";
     let userQueryParams = {
-        $userId: userId
+        $userId: userId,
     };
     let user;
     database_1.db.all(userQuery, userQueryParams, (err, rows) => {
@@ -43,7 +40,7 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
             // catch any errors
             let errorMsg = {
                 Status: 404,
-                Message: 'User could not be retrieved from the database'
+                Message: "User could not be retrieved from the database",
             };
             console.log(errorMsg);
             res.status(404).send(errorMsg);
@@ -52,7 +49,7 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
         else if (rows === undefined || rows.length !== 1) {
             let errorMsg = {
                 Status: 404,
-                Message: 'User could not be retrieved from the database'
+                Message: "User could not be retrieved from the database",
             };
             console.log(errorMsg);
             res.status(404).send(errorMsg);
@@ -60,15 +57,15 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
         }
         else {
             user = rows[0];
-            let postsQuery = 'select * from Posts where userId = $userId';
+            let postsQuery = "select * from Posts where userId = $userId";
             let postsQueryParams = {
-                $userId: userId
+                $userId: userId,
             };
             database_1.db.all(postsQuery, postsQueryParams, (err, rows) => {
                 if (err) {
                     let errorMsg = {
                         Status: 404,
-                        Message: 'Posts for the specified User could not be retrieved from the database'
+                        Message: "Posts for the specified User could not be retrieved from the database",
                     };
                     console.log(errorMsg);
                     res.status(404).send(errorMsg);
@@ -77,7 +74,7 @@ userRouter.get("/Posts/:userId", (req, res, next) => {
                 else if (rows === undefined || rows.length === 0) {
                     let errorMsg = {
                         Status: 404,
-                        Message: 'Posts for the specified User could not be retrieved from the database'
+                        Message: "Posts for the specified User could not be retrieved from the database",
                     };
                     console.log(errorMsg);
                     res.status(404).send(errorMsg);
@@ -121,7 +118,6 @@ userRouter.get("/:userId", (req, res, next) => {
 });
 /**
  * Create new User
- * @TODO add status 409 for duplicate userId
  */
 userRouter.post("/", (req, res, next) => {
     // check to see if a user with the userId submitted already exists
@@ -152,7 +148,8 @@ userRouter.post("/", (req, res, next) => {
                     error: "error occurred while checking Users database for duplicate userId",
                 });
                 res.status(404).send({
-                    Status: 404, Message: "error occurred while querying Users table in the database",
+                    Status: 404,
+                    Message: "error occurred while querying Users table in the database",
                 });
                 return;
             }
@@ -164,7 +161,8 @@ userRouter.post("/", (req, res, next) => {
                     error: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
                 });
                 res.status(409).send({
-                    Status: 409, Message: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
+                    Status: 409,
+                    Message: `User with userId: ${req.body.userId} already exists, please try again with a unique userId`,
                 });
                 return;
             }
@@ -487,14 +485,14 @@ userRouter.get("/:userId/:password", (req, res, next) => {
             console.log({
                 error: `Password for user ${req.params.userId} could not be retrieved from database`,
             });
-            res.status(404).json({
+            res.status(404).send({
                 error: `Password for user ${req.params.userId} could not be retrieved from database`,
             });
             return;
         }
         else if (row.length === 0 || row === undefined) {
             console.log({ error: `Password for user ${req.params.userId}` });
-            res.status(404).json({
+            res.status(404).send({
                 error: `Password for user ${req.params.userId} unable to be retrieved`,
             });
             return;
@@ -508,7 +506,7 @@ userRouter.get("/:userId/:password", (req, res, next) => {
                     console.log({
                         error: `error occurred when comparing hashed password to url parameter for user: ${req.params.userId}`,
                     });
-                    res.status(401).json({
+                    res.status(401).send({
                         error: `Password for user ${req.params.userId} could not be validated.`,
                     });
                     return;
@@ -518,7 +516,7 @@ userRouter.get("/:userId/:password", (req, res, next) => {
                     console.log({
                         error: ` hashed password did not match the url parameter for user: ${req.params.userId}`,
                     });
-                    res.status(401).json({
+                    res.status(401).send({
                         error: `Password for user ${req.params.userId} could not be validated.`,
                     });
                     return;
@@ -538,7 +536,7 @@ userRouter.get("/:userId/:password", (req, res, next) => {
                             data: authorization,
                         },
                     });
-                    res.status(200).send(`Authorization:Bearer ${authorization}`);
+                    res.status(200).send({ Authorization: `Bearer ${authorization}` });
                     return;
                 }
             });

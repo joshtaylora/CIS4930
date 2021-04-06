@@ -4,8 +4,9 @@ import { Observable, of } from 'rxjs';
 
 import jwt_decode from 'jwt-decode';
 // dev imports
+import { environment } from 'src/environments/environment';
 import { PostService } from './post.service';
-import { Post } from '../post';
+import { Post } from '../models/post.model';
 import { User} from '../models/user.model';
 import { Token } from '../models/token.model';
 
@@ -17,17 +18,15 @@ export class UserService {
 
   constructor(private httpC: HttpClient) {}
 
-  private usersURL = 'http://localhost:3000/Users/';
-
   userIsLoggedIn: boolean = false;
-  userName = 'admin';
+  userId = 'admin';
   password = 'JoshTaylor';
   //users = USERS;
 
-  Login(userName: string, password: string) {
+  Login(userId: string, password: string) {
     // CORS implementation in express app
-    return this.httpC.get<{ token: string }>(
-      `http://localhost:3000/Users/${userName}/${password}`
+    return this.httpC.get<{ Authorization: string }>(
+      `${environment.BASE_URL}/Users/${userId}/${password}`
     );
   }
 
@@ -45,11 +44,12 @@ export class UserService {
       lastName: string;
       emailAddress: string;
       password: string;
-    }>('https://localhost:3000/Users', userData);
+    }>(`${environment.BASE_URL}/Users`, userData);
   }
 
-  SetUserLoggedIn(userToken: { token: string }) {
+  SetUserLoggedIn(userToken: { Authorization: string }) {
     localStorage.setItem('token', JSON.stringify(userToken));
+    console.log(userToken);
     this.UserStateChanged.emit(true);
   }
 
@@ -70,16 +70,15 @@ export class UserService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.httpC.get<User[]>(this.usersURL);
+    return this.httpC.get<User[]>(`${environment.BASE_URL}/Users`);
   }
 
-  getUser(userName: string): Observable<User> {
-    return this.httpC.get<User>(`https://localhost:3000/Users/${userName}`);
+  getUser(userId: string): Observable<User> {
+    return this.httpC.get<User>(`${environment.BASE_URL}/Users/${userId}`);
   }
 
   getUsersPosts(userId: string): Observable<Post[]> {
-    let url = this.usersURL + 'Posts/' + userId;
-    return this.httpC.get<Post[]>(url);
+    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Users/${userId}`);
   }
 
 }

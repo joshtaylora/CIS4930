@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Post } from '../../post';
+import { Post } from '../../models/post.model';
 import { PostService } from '../../services/post.service';
 
 @Component({
