@@ -11,24 +11,9 @@ import { PostService } from '../../services/post.service';
   styleUrls: ['./post-detail.component.css'],
 })
 export class PostDetailComponent implements OnInit {
-  post: Post | null = null;
+  @Input() post: Post | undefined;
 
-  constructor(
-    private postSvc: PostService,
-    private route: ActivatedRoute,
-    private location: Location
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.getPost();
-  }
-
-  getPost(): void {
-    const postId = this.route.snapshot.paramMap.get('postId');
-    if (postId !== null) {
-      this.postSvc.getPost(+postId).subscribe((post) => (this.post = post));
-    } else {
-      this.location.back();
-    }
-  }
+  ngOnInit(): void {}
 }

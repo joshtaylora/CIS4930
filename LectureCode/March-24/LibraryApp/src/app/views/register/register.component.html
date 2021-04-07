@@ -2,7 +2,7 @@
   <form (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="txtUserId">UserId</label>
-      <input 
+      <input
         type="text"
         class="form-control"
         id="txtUserId"
@@ -52,8 +52,13 @@
         [(ngModel)]="userInfo!.password"
       />
     </div>
-    <div *ngIf="message != ''" [ngClass]="{'alert-danger':!success, 'alert-success':success}" class="alert" role="alert">
-      {{message}}
+    <div
+      *ngIf="message != ''"
+      [ngClass]="{ 'alert-danger': !success, 'alert-success': success }"
+      class="alert"
+      role="alert"
+    >
+      {{ message }}
     </div>
     <button (click)="changeAlert()" class="btn btn-success">Create User</button>
   </form>

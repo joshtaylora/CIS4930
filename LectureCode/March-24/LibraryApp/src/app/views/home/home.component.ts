@@ -17,9 +17,11 @@ export class HomeComponent implements OnInit {
   selectedPost?: Post;
   userIsLoggedIn: boolean = false;
 
-  constructor(private router: Router, private userSvc: UserService, private postSvc: PostService) {
-
-  }
+  constructor(
+    private router: Router,
+    private userSvc: UserService,
+    private postSvc: PostService
+  ) {}
 
   ngOnInit(): void {
     let userToken = this.userSvc.getLoggedInUser();
@@ -30,20 +32,21 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
-
   getPosts(): void {
     let userToken = this.userSvc.getLoggedInUser();
     console.log(userToken);
     if (userToken !== null && userToken.UserData !== undefined) {
       this.userIsLoggedIn = true;
       this.user = userToken.UserData;
-      this.userSvc.getUsersPosts(userToken.UserData.userId).subscribe((postArray) => {
-        this.posts = postArray;
-      }, (err)=> {
-        console.log(err);
-        this.router.navigate(['/login']);
-      });
+      this.userSvc.getUsersPosts(userToken.UserData.userId).subscribe(
+        (postArray) => {
+          this.posts = postArray;
+        },
+        (err) => {
+          console.log(err);
+          this.router.navigate(['/login']);
+        }
+      );
     } else {
       this.userIsLoggedIn = false;
       this.router.navigate(['/login']);

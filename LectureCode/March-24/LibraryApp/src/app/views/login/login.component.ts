@@ -18,7 +18,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   LoginUser(): void {
-    if (this.userAuthInfo?.userName !== undefined && this.userAuthInfo.password !== undefined) {
+    if (
+      this.userAuthInfo?.userName !== undefined &&
+      this.userAuthInfo.password !== undefined
+    ) {
       this.userService
         .Login(this.userAuthInfo?.userName, this.userAuthInfo?.password)
         .subscribe(

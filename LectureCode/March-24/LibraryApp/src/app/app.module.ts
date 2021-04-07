@@ -16,6 +16,7 @@ import { UserHomeComponent } from './views/user-home/user-home.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 import { PostsComponent } from './comp/posts/posts.component';
 import { UsersComponent } from './comp/users/users.component';
+import { CommentsComponent } from './comp/comments/comments.component';
 
 @NgModule({
   declarations: [
@@ -29,16 +30,17 @@ import { UsersComponent } from './comp/users/users.component';
     UserHomeComponent,
     PostDetailComponent,
     PostsComponent,
-    UsersComponent
+    UsersComponent,
+    CommentsComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FontAwesomeModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

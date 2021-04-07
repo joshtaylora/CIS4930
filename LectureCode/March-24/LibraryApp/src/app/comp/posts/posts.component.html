@@ -15,6 +15,9 @@
 </header>
 <div class="container-md m-5">
   <div class="row">
+    <button (click)="newPost()" class="btn btn-primary">Create New Post</button>
+  </div>
+  <div class="row">
     <ul class="col-6 list-group">
       <li
         class="list-group-item"
@@ -31,28 +34,7 @@
     </ul>
 
     <div class="col-6" *ngIf="selectedPost">
-      <div class="card text-white bg-dark mb-3">
-        <div class="card-header">
-          {{ selectedPost.userId }}
-          <a
-            class="badge badge-secondary"
-            [routerLink]="['/Users', 'Posts', selectedPost.userId]"
-            >Go to {{ selectedPost.userId }}'s Posts</a
-          >
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">{{ selectedPost.title }}</h5>
-          <p class="card-text">{{ selectedPost.content }}</p>
-          <footer class="blockquote-footer">
-            created on: {{ selectedPost.createdDate }}
-          </footer>
-
-          <a
-            class="btn btn-primary"
-            [routerLink]="['/Posts', selectedPost.postId]"
-          >Go to Post</a>
-        </div>
-      </div>
+      <app-post-detail [post]="selectedPost"></app-post-detail>
     </div>
   </div>
 </div>
