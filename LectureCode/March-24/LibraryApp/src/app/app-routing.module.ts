@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostListComponent } from './views/post-list/post-list.component';
 import { AuthService } from './services/auth.service';
 import { UsersComponent } from './comp/users/users.component';
 import { HomeComponent } from './views/home/home.component';
@@ -9,6 +8,8 @@ import { RegisterComponent } from './views/register/register.component';
 import { UserHomeComponent } from './views/user-home/user-home.component';
 import { PostsComponent } from './comp/posts/posts.component';
 import { PostDetailComponent } from './comp/post-detail/post-detail.component';
+import { CreatePostComponent } from './views/create-post/create-post.component';
+import { PostListComponent } from './views/post-list/post-list.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,11 @@ const routes: Routes = [
   },
   {
     path: 'Posts',
-    component: PostsComponent,
+    component: PostListComponent,
+  },
+  {
+    path: 'Posts/new',
+    component: CreatePostComponent,
   },
   {
     path: 'Posts/:postId',

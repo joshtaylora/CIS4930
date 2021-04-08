@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg" id="navbar-app">
   <div class="container-fluid">
     <a class="navbar-brand" [routerLink]="['/home']">LibraryApp</a>
     <button
@@ -22,12 +22,7 @@
         </li>
       </ul>
     </div>
-    <button
-      class="btn btn secondary"
-      type="button"
-      data-toggle=""
-    >
-    </button>
+    <button class="btn btn secondary" type="button" data-toggle=""></button>
     <div class="nav navbar-nav navbar-right">
       <!-- <button class="btn btn-secondary" [routerLink]="['/login']" type="button">
         <fa-icon [icon]="faSignInIcon"></fa-icon> Login
@@ -40,10 +35,30 @@
         <fa-icon [icon]="faRegisterIcon"></fa-icon>Register
       </button> -->
 
-      <button *ngIf="!userIsLoggedIn" class="btn btn-secondary" [routerLink]="['/login']" type="button"><fa-icon [icon]='faSignInIcon'></fa-icon> Login</button>
-      <button *ngIf="!userIsLoggedIn" class="btn btn-secondary" [routerLink]="['/register']" type="button"><fa-icon [icon]='faRegisterIcon'></fa-icon> Register</button>
-      <button *ngIf="userIsLoggedIn" class="btn btn-secondary" (click)="logoutUser()"  type="button"><fa-icon [icon]='faRegisterIcon'></fa-icon> Logout</button>
-
+      <button
+        *ngIf="!userIsLoggedIn"
+        class="btn btn-secondary"
+        [routerLink]="['/login']"
+        type="button"
+      >
+        <fa-icon [icon]="faSignInIcon"></fa-icon> Login
+      </button>
+      <button
+        *ngIf="!userIsLoggedIn"
+        class="btn btn-secondary"
+        [routerLink]="['/register']"
+        type="button"
+      >
+        <fa-icon [icon]="faRegisterIcon"></fa-icon> Register
+      </button>
+      <button
+        *ngIf="userIsLoggedIn"
+        class="btn btn-secondary"
+        (click)="logoutUser()"
+        type="button"
+      >
+        <fa-icon [icon]="faSignOutIcon"></fa-icon> Logout
+      </button>
     </div>
   </div>
 </nav>

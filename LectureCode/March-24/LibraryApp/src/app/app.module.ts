@@ -17,6 +17,7 @@ import { PostDetailComponent } from './comp/post-detail/post-detail.component';
 import { PostsComponent } from './comp/posts/posts.component';
 import { UsersComponent } from './comp/users/users.component';
 import { CommentsComponent } from './comp/comments/comments.component';
+import { CreatePostComponent } from './views/create-post/create-post.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CommentsComponent } from './comp/comments/comments.component';
     PostsComponent,
     UsersComponent,
     CommentsComponent,
+    CreatePostComponent,
   ],
   imports: [
     BrowserModule,

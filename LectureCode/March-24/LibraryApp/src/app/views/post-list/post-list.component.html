@@ -1,15 +1,16 @@
-<h2 class="text-center">Posts</h2>
-
-<div class="container-md" *ngFor="let post of posts">
-    <div class="card" style="margin:15px">
-        <h5 class="card-header">{{ post.title }}</h5>
-        <div class="card-body text-center">
-            <h6 class="card-subtitle mb-2 text-muted">by: {{ post.userId }}</h6>
-            <p class="card-text">{{ post.content }}</p>
-            <a [routerLink]="['/Users', 'Posts', post.userId]"  class="btn btn-primary">{{ post.userId }}'s Posts</a>
+<header
+  class="masthead"
+  style="background-image: url('assets/img/blog-page-head-img.jpg')"
+>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 co-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Blog Posts</h1>
         </div>
-        <div class="card-footer text-muted text-center">
-          {{ post.createdDate }}
-        </div>
+      </div>
     </div>
-</div>
+  </div>
+</header>
+<app-posts [userId]=""></app-posts>

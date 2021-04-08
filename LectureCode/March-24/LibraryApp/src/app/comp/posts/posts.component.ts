@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // model imports
 import { Post } from '../../models/post.model';
 
 import { PostService } from '../../services/post.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-posts',
@@ -14,16 +15,26 @@ import { PostService } from '../../services/post.service';
 export class PostsComponent implements OnInit {
   posts: Post[] | null = null;
   selectedPost?: Post;
-  newComment: string = '';
+  @Input() userId?: string;
 
-  constructor(private postSvc: PostService, private router: Router) {}
+  constructor(
+    private userSvc: UserService,
+    private postSvc: PostService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getPosts();
   }
 
   getPosts(): void {
-    this.postSvc.getPosts().subscribe((posts) => (this.posts = posts));
+    if (this.userId === undefined) {
+      this.postSvc.getPosts().subscribe((posts) => (this.posts = posts));
+    } else {
+      this.userSvc
+        .getUsersPosts(this.userId)
+        .subscribe((posts: Post[]) => (this.posts = posts));
+    }
   }
 
   onSelect(post: Post): void {

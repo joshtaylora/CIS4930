@@ -7,7 +7,7 @@ import jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { PostService } from './post.service';
 import { Post } from '../models/post.model';
-import { User} from '../models/user.model';
+import { User } from '../models/user.model';
 import { Token } from '../models/token.model';
 
 @Injectable({
@@ -15,14 +15,19 @@ import { Token } from '../models/token.model';
 })
 export class UserService {
   @Output() UserStateChanged = new EventEmitter<boolean>();
-  private defaultUser = new User('default', 'default', 'default', 'default', 'default');
+  private defaultUser = new User(
+    'default',
+    'default',
+    'default',
+    'default',
+    'default'
+  );
   private userSource = new BehaviorSubject(this.defaultUser);
 
   userIsLoggedIn: boolean = false;
   userId = 'admin';
   password = 'JoshTaylor';
   //users = USERS;
-
 
   constructor(private httpC: HttpClient) {}
 
@@ -85,7 +90,8 @@ export class UserService {
   }
 
   getUsersPosts(userId: string): Observable<Post[]> {
-    return this.httpC.get<Post[]>(`${environment.BASE_URL}/Users/Posts/${userId}`);
+    return this.httpC.get<Post[]>(
+      `${environment.BASE_URL}/Users/Posts/${userId}`
+    );
   }
-
 }

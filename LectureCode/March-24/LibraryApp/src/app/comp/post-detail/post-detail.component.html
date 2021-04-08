@@ -1,9 +1,9 @@
 <div *ngIf="post !== undefined">
-  <div class="card text-white bg-dark" style="margin: 15px">
+  <div class="card user-detail-card" style="margin: 15px">
     <div class="card-header">
-      <span class="h6">{{ post!.title }}</span> by
+      <span class="post-title">{{ post!.title }}</span> by
       <a
-        class="badge badge-light"
+        class="badge userId-badge"
         [routerLink]="['/Users', 'Posts', post.userId]"
         >{{ post!.userId }}</a
       >
