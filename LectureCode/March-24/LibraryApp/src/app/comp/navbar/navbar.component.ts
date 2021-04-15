@@ -4,8 +4,10 @@ import {
   faSignInAlt,
   faUserPlus,
   faSignOutAlt,
+  faHome,
+  faBars,
 } from '@fortawesome/free-solid-svg-icons';
-
+import { UsersLinkDirective } from 'src/app/directives/users-link.directive';
 import { Token } from 'src/app/models/token.model';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,11 +18,14 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class NavbarComponent implements OnInit {
   userIsLoggedIn = false;
-
   faSignInIcon = faSignInAlt;
   faSignOutIcon = faSignOutAlt;
   faRegisterIcon = faUserPlus;
+  faHomeIcon = faHome;
+  faBarsIcon = faBars;
 
+  toggleNavbar = true;
+  hover = true;
   currentUser: Token | null = null;
 
   constructor(private userSvc: UserService, private router: Router) {}

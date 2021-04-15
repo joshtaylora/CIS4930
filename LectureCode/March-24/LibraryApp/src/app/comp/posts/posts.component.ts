@@ -6,6 +6,7 @@ import { Post } from '../../models/post.model';
 
 import { PostService } from '../../services/post.service';
 import { UserService } from '../../services/user.service';
+import { HighlightDirective } from '../../directives/highlight.directive';
 
 @Component({
   selector: 'app-posts',

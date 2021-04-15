@@ -13,6 +13,22 @@ li.selected-post-list-item a.userId-badge {
   color: #1d2021;
 }
 
+.user-home-title {
+  color: #fb4934;
+}
+
+.users-header {
+  color: #83a598;
+}
+
+a.posts-header {
+  color: #d3869b;
+}
+
+a.users-header {
+  color: #83a598;
+}
+
 a.userId-badge {
   color: #1d2021;
   background-color: #689d6a;
@@ -23,11 +39,11 @@ li.post-list-item {
 }
 
 li.selected-post-list-item {
-  background-color: #8ec07c;
+  background-color: #928374;
   color: #1d2021;
 }
 
-li.selected-post-list-item span.post-title {
+li.selected-post-list-item div.container div.row div.col-6 span.post-title {
   color: #fabd2f;
   font-weight: bold;
 }
@@ -38,7 +54,7 @@ span.post-title {
 }
 
 span.selected-post-title {
-  color: #1d2021;
+  color: #fbf1c7;
   font-weight: bold;
 }
 
